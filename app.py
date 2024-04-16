@@ -16,19 +16,29 @@ class Specs(db.Model):
     Designator = db.Column(db.String(144), unique=False)
     Subdesignator = db.Column(db.String(20), unique=False)
     Image = db.Column(db.LargeBinary, unique=False)
-    Fluids = db.Column(db.String(50), unique=False)
+    Oil = db.Column(db.String(15), unique=False)
+    Coolant = db.Column(db.String(15), unique=False)
     Department =db.Column(db.String(20), unique=False)
-    Motor = db.Column(db.String(100), unique=False)
+    Motor = db.Column(db.LargeBinary, unique=False)
+    
 
 
-    def __init__(self, title, content):
-        self.title = title
-        self.content = content
+    def __init__(SN, Name, Designator, Subdesignator,Image,Oil,Coolant,Department,Motor):
+        self.SN = SN
+        self.Name = Name
+        self.Designator = Designator
+        self.Subdesignator = Subdesignator
+        self.Image = Image
+        self.Oil = Oil
+        self.Coolant = Coolant
+        self.Department = Department
+        self.Motor = Motor
+
 
 
 class SpecsSchema(ma.Schema):
     class Meta:
-        fields = ('title', 'content')
+        fields = ('SN', 'Name', 'Designator', 'Subdesignator','Image','Oil','Coolant','Department','Motor')
 
 
 Specs_schema = SpecsSchema()
