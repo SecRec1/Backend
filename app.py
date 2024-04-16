@@ -56,14 +56,14 @@ def add_Specs():
     department = request.json['department']
     motor = request.json['motor']
 
-    new_guide = Specs(sn, name, designator, subdesignator,image,oil,coolant,department,motor)
+    new_specs = Specs(sn, name, designator, subdesignator,image,oil,coolant,department,motor)
 
     db.session.add(new_specs)
     db.session.commit()
 
-    guide = Guide.query.get(new_guide.id)
+    specs = Specs.query.get(new_specs.id)
 
-    return guide_schema.jsonify(guide)
+    return specs_schema.jsonify(specs)
 
 
 if __name__ == '__main__':
