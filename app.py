@@ -47,3 +47,34 @@ Specss_schema = SpecsSchema(many=True)
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+class Task(db.Model):
+    Task = db.Column(db.Integer, primary_key=True)
+    Lastcompleted = db.Column(db.String(100), unique=False)
+    Nextdue = db.Column(db.String(144), unique=False)
+    
+    
+    
+
+
+    def __init__(Task, Lastcompleted, Nextdue):
+        self.Task = Task
+        self.Lastcompleted = Lastcompleted
+        self.Nextdue = Nextdue
+        
+        
+
+
+
+class TaskSchema(ma.Schema):
+    class Meta:
+        fields = ('Task', 'Lastcompleted', 'Nextdue')
+
+
+Task_schema = TaskSchema()
+Tasks_schema = TaskSchema(many=True)
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
