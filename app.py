@@ -11,28 +11,28 @@ db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
 class Specs(db.Model):
-    SN = db.Column(db.Integer, primary_key=True)
-    Name = db.Column(db.String(100), unique=False)
-    Designator = db.Column(db.String(144), unique=False)
-    Subdesignator = db.Column(db.String(20), unique=False)
-    Image = db.Column(db.LargeBinary, unique=False)
-    Oil = db.Column(db.String(15), unique=False)
-    Coolant = db.Column(db.String(15), unique=False)
-    Department =db.Column(db.String(20), unique=False)
-    Motor = db.Column(db.LargeBinary, unique=False)
+    sn = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=False)
+    designator = db.Column(db.String(144), unique=False)
+    subdesignator = db.Column(db.String(20), unique=False)
+    image = db.Column(db.LargeBinary, unique=False)
+    oil = db.Column(db.String(15), unique=False)
+    coolant = db.Column(db.String(15), unique=False)
+    department =db.Column(db.String(20), unique=False)
+    motor = db.Column(db.LargeBinary, unique=False)
     
 
 
-    def __init__(SN, Name, Designator, Subdesignator,Image,Oil,Coolant,Department,Motor):
-        self.SN = SN
-        self.Name = Name
-        self.Designator = Designator
-        self.Subdesignator = Subdesignator
-        self.Image = Image
-        self.Oil = Oil
-        self.Coolant = Coolant
-        self.Department = Department
-        self.Motor = Motor
+    def __init__(sn, name, designator, subdesignator,image,oil,coolant,department,motor):
+        self.sn = sn
+        self.name = name
+        self.designator = designator
+        self.subdesignator = subdesignator
+        self.image = image
+        self.oil = oil
+        self.coolant = coolant
+        self.department = department
+        self.motor = motor
 
 
 
@@ -44,24 +44,45 @@ class SpecsSchema(ma.Schema):
 Specs_schema = SpecsSchema()
 Specss_schema = SpecsSchema(many=True)
 
+@app.route('/Specs', methods=["POST"])
+def add_Specs():
+    sn = request.json['sn']
+    name = request.json['name']
+    designator = request.json['designator']
+    subdesignator = request.json['subdesignator']
+    image = request.json['image']
+    oil = request.json['oil']
+    coolant = request.json['coolant']
+    department = request.json['department']
+    motor = request.json['motor']
+
+    new_guide = Specs(sn, name, designator, subdesignator,image,oil,coolant,department,motor)
+
+    db.session.add(new_specs)
+    db.session.commit()
+
+    guide = Guide.query.get(new_guide.id)
+
+    return guide_schema.jsonify(guide)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
 
 
 class Task(db.Model):
-    Task = db.Column(db.Integer, primary_key=True)
-    Lastcompleted = db.Column(db.String(100), unique=False)
-    Nextdue = db.Column(db.String(144), unique=False)
+    task = db.Column(db.Integer, primary_key=True)
+    lastcompleted = db.Column(db.String(100), unique=False)
+    nextdue = db.Column(db.String(144), unique=False)
     
     
     
 
 
-    def __init__(Task, Lastcompleted, Nextdue):
-        self.Task = Task
-        self.Lastcompleted = Lastcompleted
-        self.Nextdue = Nextdue
+    def __init__(task, lastcompleted, nextdue):
+        self.task = task
+        self.lastcompleted = lastcompleted
+        self.nextdue = nextdue
         
         
 
