@@ -44,8 +44,19 @@ class SpecsSchema(ma.Schema):
 Specs_schema = SpecsSchema()
 Specss_schema = SpecsSchema(many=True)
 
+@app.route("/Specs", methods=["GET"])
+def get_specs():
+    all_specs = Specs.query.all()
+    result = Specs_schema.dump(all_specs)
+    return jsonify(result)
+
+@app.route("/Specs/<id>", methods=["GET"])
+def get_specs(id):
+    specs = Specs.query.get(id)
+    return specs_schema.jsonify(specs)
+
 @app.route('/Specs', methods=["POST"])
-def add_Specs():
+def add_specs():
     sn = request.json['sn']
     name = request.json['name']
     designator = request.json['designator']
@@ -63,7 +74,41 @@ def add_Specs():
 
     specs = Specs.query.get(new_specs.id)
 
-    return specs_schema.jsonify(specs)
+    return Specs_schema.jsonify(specs)
+
+@app.route("/Specs/<id>", methods=["PUT"])
+def specs_update(id):
+    specs = Specs.query.get(id)
+    sn = request.json['sn']
+    name = request.json['name']
+    designator = request.json['designator']
+    subdesignator = request.json['subdesignator']
+    image = request.json['image']
+    oil = request.json['oil']
+    coolant = request.json['coolant']
+    department = request.json['department']
+    motor = request.json['motor']
+
+    Specs.sn = sn
+    Specs.name = name
+    Specs.designator = designator
+    Specs.subdesignator = subdesignator
+    Specs.image = image
+    Specs.oil = oil
+    Specs.coolant = coolant
+    Specs.department = department
+    Specs.motor = motor
+
+    db.session.commit()
+    return Specs_schema.jsonify(specs)
+
+@app.route("/specs/<id>", methods=["DELETE"])
+def specs_delete(id):
+    specs = Specs.query.get(id)
+    db.session.delete(specs)
+    db.session.commit()
+
+    return "Specs were successfully deleted"
 
 
 if __name__ == '__main__':
@@ -90,11 +135,61 @@ class Task(db.Model):
 
 class TaskSchema(ma.Schema):
     class Meta:
-        fields = ('Task', 'Lastcompleted', 'Nextdue')
+        fields = ('task', 'lastcompleted', 'nextdue')
 
 
 Task_schema = TaskSchema()
 Tasks_schema = TaskSchema(many=True)
+
+@app.route("/Task", methods=["GET"])
+def get_task():
+    all_task = Specs.query.all()
+    result = Task_schema.dump(all_task)
+    return jsonify(result)
+
+@app.route("/Task/<id>", methods=["GET"])
+def get_task(id):
+    task = Task.query.get(id)
+    return Task_schema.jsonify(task)
+
+@app.route('/Task', methods=["POST"])
+def add_task():
+    task = request.json['task']
+    lastcompleted = request.json['lastcompleted']
+    nextdue = request.json['nextdue']
+    
+
+    new_task = Task(task, lastcompleted, nextdue)
+
+    db.session.add(new_task)
+    db.session.commit()
+
+    task = Task.query.get(new_task.id)
+
+    return Task_schema.jsonify(task)
+
+@app.route("/Task/<id>", methods=["PUT"])
+def task_update(id):
+    task = Task.query.get(id)
+    task = request.json['task']
+    lastcompleted = request.json['lastcompleted']
+    nextdue = request.json['nextdue']
+
+    Task.task = task
+    Task.lastcompleted = lastcompleted
+    Task.nextdue = nextdue
+    
+
+    db.session.commit()
+    return Task_schema.jsonify(task)
+
+@app.route("/Specs/<id>", methods=["DELETE"])
+def task_delete(id):
+    task = Task.query.get(id)
+    db.session.delete(task)
+    db.session.commit()
+
+    return "Task was successfully deleted"
 
 
 if __name__ == '__main__':
