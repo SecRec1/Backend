@@ -1,7 +1,9 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 import os
+
+
 
 app = Flask(__name__)
 
@@ -11,6 +13,7 @@ db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
 class Specs(db.Model):
+    qrcode = db.Column(db.LargeBinary, unique=False)
     sn = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=False)
     designator = db.Column(db.String(144), unique=False)
@@ -23,7 +26,8 @@ class Specs(db.Model):
     
 
 
-    def __init__(sn, name, designator, subdesignator,image,oil,coolant,department,motor):
+    def __init__(self,qrcode,sn, name, designator, subdesignator,image,oil,coolant,department,motor):
+        self.qrcode = qrcode
         self.sn = sn
         self.name = name
         self.designator = designator
@@ -38,16 +42,16 @@ class Specs(db.Model):
 
 class SpecsSchema(ma.Schema):
     class Meta:
-        fields = ('SN', 'Name', 'Designator', 'Subdesignator','Image','Oil','Coolant','Department','Motor')
+        fields = ('Qrcode','SN', 'Name', 'Designator', 'Subdesignator','Image','Oil','Coolant','Department','Motor')
 
 
-Specs_schema = SpecsSchema()
-Specss_schema = SpecsSchema(many=True)
+specs_schema = SpecsSchema()
+specss_schema = SpecsSchema(many=True)
 
 @app.route("/Specs", methods=["GET"])
 def get_specs():
     all_specs = Specs.query.all()
-    result = Specs_schema.dump(all_specs)
+    result = specs_schema.dump(all_specs)
     return jsonify(result)
 
 @app.route("/Specs/<id>", methods=["GET"])
@@ -57,6 +61,7 @@ def get_specs(id):
 
 @app.route('/Specs', methods=["POST"])
 def add_specs():
+    qrcode = request.json['qrcode']
     sn = request.json['sn']
     name = request.json['name']
     designator = request.json['designator']
@@ -67,18 +72,19 @@ def add_specs():
     department = request.json['department']
     motor = request.json['motor']
 
-    new_specs = Specs(sn, name, designator, subdesignator,image,oil,coolant,department,motor)
+    new_specs = Specs(qrcode,sn, name, designator, subdesignator,image,oil,coolant,department,motor)
 
     db.session.add(new_specs)
     db.session.commit()
 
     specs = Specs.query.get(new_specs.id)
 
-    return Specs_schema.jsonify(specs)
+    return specs_schema.jsonify(specs)
 
 @app.route("/Specs/<id>", methods=["PUT"])
 def specs_update(id):
     specs = Specs.query.get(id)
+    qrcode = request.json['qrcode']
     sn = request.json['sn']
     name = request.json['name']
     designator = request.json['designator']
@@ -89,6 +95,7 @@ def specs_update(id):
     department = request.json['department']
     motor = request.json['motor']
 
+    Specs.qrcode = qrcode
     Specs.sn = sn
     Specs.name = name
     Specs.designator = designator
@@ -100,7 +107,7 @@ def specs_update(id):
     Specs.motor = motor
 
     db.session.commit()
-    return Specs_schema.jsonify(specs)
+    return specs_schema.jsonify(specs)
 
 @app.route("/specs/<id>", methods=["DELETE"])
 def specs_delete(id):
@@ -124,7 +131,7 @@ class Task(db.Model):
     
 
 
-    def __init__(task, lastcompleted, nextdue):
+    def __init__(self, task, lastcompleted, nextdue):
         self.task = task
         self.lastcompleted = lastcompleted
         self.nextdue = nextdue
@@ -138,19 +145,19 @@ class TaskSchema(ma.Schema):
         fields = ('task', 'lastcompleted', 'nextdue')
 
 
-Task_schema = TaskSchema()
-Tasks_schema = TaskSchema(many=True)
+task_schema = TaskSchema()
+tasks_schema = TaskSchema(many=True)
 
 @app.route("/Task", methods=["GET"])
 def get_task():
     all_task = Specs.query.all()
-    result = Task_schema.dump(all_task)
+    result = task_schema.dump(all_task)
     return jsonify(result)
 
 @app.route("/Task/<id>", methods=["GET"])
 def get_task(id):
     task = Task.query.get(id)
-    return Task_schema.jsonify(task)
+    return task_schema.jsonify(task)
 
 @app.route('/Task', methods=["POST"])
 def add_task():
@@ -166,7 +173,7 @@ def add_task():
 
     task = Task.query.get(new_task.id)
 
-    return Task_schema.jsonify(task)
+    return task_schema.jsonify(task)
 
 @app.route("/Task/<id>", methods=["PUT"])
 def task_update(id):
@@ -181,9 +188,9 @@ def task_update(id):
     
 
     db.session.commit()
-    return Task_schema.jsonify(task)
+    return task_schema.jsonify(task)
 
-@app.route("/Specs/<id>", methods=["DELETE"])
+@app.route("/Task/<id>", methods=["DELETE"])
 def task_delete(id):
     task = Task.query.get(id)
     db.session.delete(task)
