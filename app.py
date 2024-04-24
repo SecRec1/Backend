@@ -5,6 +5,7 @@ import os
 
 
 
+
 app = Flask(__name__)
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -13,26 +14,26 @@ db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
 class Specs(db.Model):
-    qrcode = db.Column(db.LargeBinary, unique=False)
+    qrcode = db.Column(db.String, unique=False)
     sn = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=False)
     designator = db.Column(db.String(144), unique=False)
     subdesignator = db.Column(db.String(20), unique=False)
-    image = db.Column(db.LargeBinary, unique=False)
+    
     oil = db.Column(db.String(15), unique=False)
     coolant = db.Column(db.String(15), unique=False)
     department =db.Column(db.String(20), unique=False)
-    motor = db.Column(db.LargeBinary, unique=False)
+    motor = db.Column(db.String, unique=False)
     
 
 
-    def __init__(self,qrcode,sn, name, designator, subdesignator,image,oil,coolant,department,motor):
+    def __init__(self,qrcode,sn, name, designator, subdesignator,oil,coolant,department,motor):
         self.qrcode = qrcode
         self.sn = sn
         self.name = name
         self.designator = designator
         self.subdesignator = subdesignator
-        self.image = image
+        
         self.oil = oil
         self.coolant = coolant
         self.department = department
@@ -42,16 +43,16 @@ class Specs(db.Model):
 
 class SpecsSchema(ma.Schema):
     class Meta:
-        fields = ('Qrcode','SN', 'Name', 'Designator', 'Subdesignator','Image','Oil','Coolant','Department','Motor')
+        fields = ('Qrcode','SN', 'Name', 'Designator', 'Subdesignator','Oil','Coolant','Department','Motor')
 
 
 specs_schema = SpecsSchema()
 specss_schema = SpecsSchema(many=True)
 
 @app.route("/Specs", methods=["GET"])
-def get_specs():
+def get_specss():
     all_specs = Specs.query.all()
-    result = specs_schema.dump(all_specs)
+    result = specss_schema.dump(all_specs)
     return jsonify(result)
 
 @app.route("/Specs/<id>", methods=["GET"])
@@ -66,13 +67,13 @@ def add_specs():
     name = request.json['name']
     designator = request.json['designator']
     subdesignator = request.json['subdesignator']
-    image = request.json['image']
+    
     oil = request.json['oil']
     coolant = request.json['coolant']
     department = request.json['department']
     motor = request.json['motor']
 
-    new_specs = Specs(qrcode,sn, name, designator, subdesignator,image,oil,coolant,department,motor)
+    new_specs = Specs(qrcode,sn, name, designator, subdesignator,oil,coolant,department,motor)
 
     db.session.add(new_specs)
     db.session.commit()
@@ -89,7 +90,6 @@ def specs_update(id):
     name = request.json['name']
     designator = request.json['designator']
     subdesignator = request.json['subdesignator']
-    image = request.json['image']
     oil = request.json['oil']
     coolant = request.json['coolant']
     department = request.json['department']
@@ -100,7 +100,7 @@ def specs_update(id):
     Specs.name = name
     Specs.designator = designator
     Specs.subdesignator = subdesignator
-    Specs.image = image
+    
     Specs.oil = oil
     Specs.coolant = coolant
     Specs.department = department
@@ -109,7 +109,7 @@ def specs_update(id):
     db.session.commit()
     return specs_schema.jsonify(specs)
 
-@app.route("/specs/<id>", methods=["DELETE"])
+@app.route("/Specs/<id>", methods=["DELETE"])
 def specs_delete(id):
     specs = Specs.query.get(id)
     db.session.delete(specs)
@@ -149,9 +149,9 @@ task_schema = TaskSchema()
 tasks_schema = TaskSchema(many=True)
 
 @app.route("/Task", methods=["GET"])
-def get_task():
+def get_tasks():
     all_task = Specs.query.all()
-    result = task_schema.dump(all_task)
+    result = tasks_schema.dump(all_task)
     return jsonify(result)
 
 @app.route("/Task/<id>", methods=["GET"])
