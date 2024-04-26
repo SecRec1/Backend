@@ -43,7 +43,7 @@ class Specs(db.Model):
 
 class SpecsSchema(ma.Schema):
     class Meta:
-        fields = ('Qrcode','SN', 'Name', 'Designator', 'Subdesignator','Oil','Coolant','Department','Motor')
+        fields = ('qrcode','sn', 'name', 'designator', 'subdesignator','oil','coolant','department','motor')
 
 
 specs_schema = SpecsSchema()
@@ -55,9 +55,9 @@ def get_specss():
     result = specss_schema.dump(all_specs)
     return jsonify(result)
 
-@app.route("/Specs/<id>", methods=["GET"])
-def get_specs(id):
-    specs = Specs.query.get(id)
+@app.route("/Specs/<sn>", methods=["GET"])
+def get_specs(sn):
+    specs = Specs.query.get(sn)
     return specs_schema.jsonify(specs)
 
 @app.route('/Specs', methods=["POST"])
@@ -82,9 +82,9 @@ def add_specs():
 
     return specs_schema.jsonify(specs)
 
-@app.route("/Specs/<id>", methods=["PUT"])
-def specs_update(id):
-    specs = Specs.query.get(id)
+@app.route("/Specs/<sn>", methods=["PUT"])
+def specs_update(sn):
+    specs = Specs.query.get(sn)
     qrcode = request.json['qrcode']
     sn = request.json['sn']
     name = request.json['name']
@@ -109,9 +109,9 @@ def specs_update(id):
     db.session.commit()
     return specs_schema.jsonify(specs)
 
-@app.route("/Specs/<id>", methods=["DELETE"])
-def specs_delete(id):
-    specs = Specs.query.get(id)
+@app.route("/Specs/<sn>", methods=["DELETE"])
+def specs_delete(sn):
+    specs = Specs.query.get(sn)
     db.session.delete(specs)
     db.session.commit()
 
@@ -123,15 +123,17 @@ if __name__ == '__main__':
 
 
 class Task(db.Model):
-    task = db.Column(db.Integer, primary_key=True)
-    lastcompleted = db.Column(db.String(100), unique=False)
-    nextdue = db.Column(db.String(144), unique=False)
+    id = db.Column(db.Integer, primary_key=True)
+    task = db.Column(db.String, unique=False)
+    lastcompleted = db.Column(db.String(20), unique=False)
+    nextdue = db.Column(db.String(20), unique=False)
     
     
     
 
 
-    def __init__(self, task, lastcompleted, nextdue):
+    def __init__(self, id, task, lastcompleted, nextdue):
+        self.id = id
         self.task = task
         self.lastcompleted = lastcompleted
         self.nextdue = nextdue
@@ -142,7 +144,7 @@ class Task(db.Model):
 
 class TaskSchema(ma.Schema):
     class Meta:
-        fields = ('task', 'lastcompleted', 'nextdue')
+        fields = ('id','task', 'lastcompleted', 'nextdue')
 
 
 task_schema = TaskSchema()
@@ -161,12 +163,13 @@ def get_task(id):
 
 @app.route('/Task', methods=["POST"])
 def add_task():
+    id = request.json['id']
     task = request.json['task']
     lastcompleted = request.json['lastcompleted']
     nextdue = request.json['nextdue']
     
 
-    new_task = Task(task, lastcompleted, nextdue)
+    new_task = Task(id, task, lastcompleted, nextdue)
 
     db.session.add(new_task)
     db.session.commit()
@@ -178,10 +181,12 @@ def add_task():
 @app.route("/Task/<id>", methods=["PUT"])
 def task_update(id):
     task = Task.query.get(id)
+    id = request.json['id']
     task = request.json['task']
     lastcompleted = request.json['lastcompleted']
     nextdue = request.json['nextdue']
 
+    Task.id = id
     Task.task = task
     Task.lastcompleted = lastcompleted
     Task.nextdue = nextdue
