@@ -14,7 +14,8 @@ db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
 class Specs(db.Model):
-    qrcode = db.Column(db.String, unique=False)
+    id = db.Column(db.Integer, unique=True)
+    qrcode = db.Column(db.String(), unique=False)
     sn = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=False)
     designator = db.Column(db.String(144), unique=False)
@@ -23,7 +24,7 @@ class Specs(db.Model):
     oil = db.Column(db.String(15), unique=False)
     coolant = db.Column(db.String(15), unique=False)
     department =db.Column(db.String(20), unique=False)
-    motor = db.Column(db.String, unique=False)
+    motor = db.Column(db.String(), unique=False)
     
 
 
@@ -55,15 +56,19 @@ def get_specss():
     result = specss_schema.dump(all_specs)
     return jsonify(result)
 
+
 @app.route("/Specs/<sn>", methods=["GET"])
 def get_specs(sn):
     specs = Specs.query.get(sn)
     return specs_schema.jsonify(specs)
 
-@app.route('/Specs', methods=["POST"])
+
+
+@app.route("/Specs", methods=["POST"])
 def add_specs():
-    qrcode = request.json['qrcode']
+    
     sn = request.json['sn']
+    qrcode = request.json['qrcode']
     name = request.json['name']
     designator = request.json['designator']
     subdesignator = request.json['subdesignator']
@@ -78,7 +83,7 @@ def add_specs():
     db.session.add(new_specs)
     db.session.commit()
 
-    specs = Specs.query.get(new_specs.id)
+    specs = Specs.query.get(new_specs.sn)
 
     return specs_schema.jsonify(specs)
 
@@ -202,6 +207,99 @@ def task_delete(id):
     db.session.commit()
 
     return "Task was successfully deleted"
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+    
+
+
+
+
+
+
+
+
+class Admin(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(20), unique=True)
+    password = db.Column(db.String(20), unique=True)
+    
+    
+    
+    
+
+
+    def __init__(self, id, username, password):
+        self.id = id
+        self.username = username
+        self.password = password
+       
+        
+        
+
+
+
+class AdminSchema(ma.Schema):
+    class Meta:
+        fields = ('id','username', 'password')
+
+
+admin_schema = AdminSchema()
+admins_schema = AdminSchema(many=True)
+
+@app.route("/admin", methods=["GET"])
+def get_admins():
+    all_admins = Specs.query.all()
+    result = tasks_schema.dump(all_admins)
+    return jsonify(result)
+
+@app.route("/admin/<id>", methods=["GET"])
+def get_admin(id):
+    admin = Admin.query.get(id)
+    return admin_schema.jsonify(admin)
+
+@app.route('/admin', methods=["POST"])
+def add_admin():
+    id = request.json['id']
+    username = request.json['username']
+    password = request.json['password']
+   
+    
+
+    new_admin = Admin(id, username, password)
+
+    db.session.add(new_admin)
+    db.session.commit()
+
+    admin = Admin.query.get(new_admin.id)
+
+    return admin_schema.jsonify(admin)
+
+@app.route("/admin/<id>", methods=["PUT"])
+def admin_update(id):
+    admin = Admin.query.get(id)
+    id = request.json['id']
+    username = request.json['username']
+    password = request.json['password']
+    
+
+    Admin.id = id
+    Admin.username = username
+    Admin.password = password
+    
+    
+
+    db.session.commit()
+    return admin_schema.jsonify(admin)
+
+@app.route("/admin/<id>", methods=["DELETE"])
+def admin_delete(id):
+    admin = Admin.query.get(id)
+    db.session.delete(admin)
+    db.session.commit()
+
+    return "Admin was successfully deleted"
 
 
 if __name__ == '__main__':
