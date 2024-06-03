@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
+import datetime
 import os
 
 
@@ -20,7 +21,6 @@ class Specs(db.Model):
     name = db.Column(db.String(100), unique=False)
     designator = db.Column(db.String(144), unique=False)
     subdesignator = db.Column(db.String(20), unique=False)
-    
     oil = db.Column(db.String(15), unique=False)
     coolant = db.Column(db.String(15), unique=False)
     department =db.Column(db.String(20), unique=False)
@@ -34,7 +34,6 @@ class Specs(db.Model):
         self.name = name
         self.designator = designator
         self.subdesignator = subdesignator
-        
         self.oil = oil
         self.coolant = coolant
         self.department = department
@@ -123,33 +122,32 @@ def specs_delete(sn):
     return "Specs were successfully deleted"
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
 
 
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     task = db.Column(db.String, unique=False)
-    lastcompleted = db.Column(db.String(20), unique=False)
-    nextdue = db.Column(db.String(20), unique=False)
+    instructions = db.Column(db.String, unique=False)
+
+    
     
     
     
 
 
-    def __init__(self, id, task, lastcompleted, nextdue):
+    def __init__(self, id, task, instructions):
         self.id = id
         self.task = task
-        self.lastcompleted = lastcompleted
-        self.nextdue = nextdue
-        
+        self.instructions = instructions
+       
         
 
 
 
 class TaskSchema(ma.Schema):
     class Meta:
-        fields = ('id','task', 'lastcompleted', 'nextdue')
+        fields = ('id','task', 'instructions' )
 
 
 task_schema = TaskSchema()
@@ -157,7 +155,7 @@ tasks_schema = TaskSchema(many=True)
 
 @app.route("/Task", methods=["GET"])
 def get_tasks():
-    all_task = Specs.query.all()
+    all_task = Task.query.all()
     result = tasks_schema.dump(all_task)
     return jsonify(result)
 
@@ -170,11 +168,11 @@ def get_task(id):
 def add_task():
     id = request.json['id']
     task = request.json['task']
-    lastcompleted = request.json['lastcompleted']
-    nextdue = request.json['nextdue']
+    instructions = request.json['instructions']
+    
     
 
-    new_task = Task(id, task, lastcompleted, nextdue)
+    new_task = Task(id, task, instructions)
 
     db.session.add(new_task)
     db.session.commit()
@@ -188,13 +186,12 @@ def task_update(id):
     task = Task.query.get(id)
     id = request.json['id']
     task = request.json['task']
-    lastcompleted = request.json['lastcompleted']
-    nextdue = request.json['nextdue']
+    instructions = request.json['instructions']
+    
 
     Task.id = id
     Task.task = task
-    Task.lastcompleted = lastcompleted
-    Task.nextdue = nextdue
+    Task.instructions = instructions
     
 
     db.session.commit()
@@ -209,10 +206,81 @@ def task_delete(id):
     return "Task was successfully deleted"
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
-    
 
+class IBST(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    specs_sn = db.Column(db.Integer, db.ForeignKey('specs.sn'), unique= False)
+    task_id = db.Column(db.Integer, db.ForeignKey('task.id'), unique=False)
+    lastcompleted = db.Column(db.String, unique=False)
+    nextdue = db.Column(db.String, unique=False)
+
+    def __init__(self, specs_sn, task_id, lastcompleted, nextdue):
+        self.specs_sn = specs_sn
+        self.task_id = task_id
+        self.lastcompleted = lastcompleted
+        self.nextdue = nextdue
+class IBSTSchema(ma.Schema):
+    class Meta:
+        fields = ('specs_sn', 'task_id', 'lastcompleted', 'nextdue')
+
+
+
+
+
+ibst_schema = IBSTSchema()
+ibsts_schema = IBSTSchema(many=True)
+    
+@app.route("/IBST", methods=["GET"])
+def get_ibsts():
+    all_ibst = IBST.query.all()
+    result = ibsts_schema.dump(all_ibst)
+    return jsonify(result)
+
+
+@app.route("/IBST/<id>", methods=["GET"])
+def get_ibst(id):
+    ibst = IBST.query.get(id)
+    return ibst_schema.jsonify(ibst)
+
+@app.route('/IBST', methods=["POST"])
+def add_ibst():
+    specs_sn = request.json['specs_sn']
+    task_id = request.json['task_id']
+    lastcompleted = request.json['lastcompleted']
+    nextdue = request.json['nextdue']
+
+    new_ibst = IBST(specs_sn, task_id, lastcompleted, nextdue)
+
+    db.session.add(new_ibst)
+    db.session.commit()
+
+    ibst = IBST.query.get(new_ibst.id)
+
+    return ibst_schema.jsonify(ibst)
+
+@app.route("/IBST/<id>", methods=["PUT"])
+def ibst_update(id):
+    ibst = IBST.query.get(id)
+    specs_sn = request.json['specs_sn']
+    task_id = request.json['task_id']
+    lastcompleted = request.json['lastcompleted']
+    nextdue = request.json['nextdue']
+
+    IBST.specs_sn = specs_sn
+    IBST.task_id = task_id
+    IBST.lastcompleted = lastcompleted
+    IBST.nextdue = nextdue
+
+    db.session.commit()
+    return ibst_schema.jsonify(ibst)
+
+@app.route("/IBST/<id>", methods=["DELETE"])
+def ibst_delete(id):
+    ibst = IBST.query.get(id)
+    db.session.delete(ibst)
+    db.session.commit()
+    return "IBST was successfully deleted"
+    
 
 
 
