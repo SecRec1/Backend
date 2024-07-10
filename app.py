@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
-import datetime
+
 import os
 
 
@@ -17,7 +17,7 @@ ma = Marshmallow(app)
 class Specs(db.Model):
     id = db.Column(db.Integer, unique=True)
     qrcode = db.Column(db.String(), unique=False)
-    sn = db.Column(db.Integer, primary_key=True)
+    sn = db.Column(db.String, primary_key=True)
     name = db.Column(db.String(100), unique=False)
     designator = db.Column(db.String(144), unique=False)
     subdesignator = db.Column(db.String(20), unique=False)
@@ -25,10 +25,11 @@ class Specs(db.Model):
     coolant = db.Column(db.String(15), unique=False)
     department =db.Column(db.String(20), unique=False)
     motor = db.Column(db.String(), unique=False)
-    
+    hours = db.Column(db.String(),unique=False)
 
 
-    def __init__(self,qrcode,sn, name, designator, subdesignator,oil,coolant,department,motor):
+    def __init__(self,id,qrcode,sn, name, designator, subdesignator,oil,coolant,department,motor,hours):
+        self.id = id
         self.qrcode = qrcode
         self.sn = sn
         self.name = name
@@ -38,12 +39,13 @@ class Specs(db.Model):
         self.coolant = coolant
         self.department = department
         self.motor = motor
+        self.hours = hours
 
 
 
 class SpecsSchema(ma.Schema):
     class Meta:
-        fields = ('qrcode','sn', 'name', 'designator', 'subdesignator','oil','coolant','department','motor')
+        fields = ('id','qrcode','sn', 'name', 'designator', 'subdesignator','oil','coolant','department','motor','hours')
 
 
 specs_schema = SpecsSchema()
@@ -65,19 +67,20 @@ def get_specs(sn):
 
 @app.route("/Specs", methods=["POST"])
 def add_specs():
-    
+    id = request.json['id']
     sn = request.json['sn']
     qrcode = request.json['qrcode']
     name = request.json['name']
     designator = request.json['designator']
     subdesignator = request.json['subdesignator']
-    
+    hours = request.json['hours']
     oil = request.json['oil']
     coolant = request.json['coolant']
     department = request.json['department']
     motor = request.json['motor']
+    hours = request.json['hours']
 
-    new_specs = Specs(qrcode,sn, name, designator, subdesignator,oil,coolant,department,motor)
+    new_specs = Specs(id,qrcode,sn, name, designator, subdesignator,oil,coolant,department,motor,hours)
 
     db.session.add(new_specs)
     db.session.commit()
@@ -86,7 +89,7 @@ def add_specs():
 
     return specs_schema.jsonify(specs)
 
-@app.route("/Specs/<sn>", methods=["PUT"])
+@app.route("/Specs/<sn>", methods=["PATCH"])
 def specs_update(sn):
     specs = Specs.query.get(sn)
     qrcode = request.json['qrcode']
@@ -98,6 +101,7 @@ def specs_update(sn):
     coolant = request.json['coolant']
     department = request.json['department']
     motor = request.json['motor']
+    hours = request.json['hours']
 
     Specs.qrcode = qrcode
     Specs.sn = sn
@@ -109,6 +113,7 @@ def specs_update(sn):
     Specs.coolant = coolant
     Specs.department = department
     Specs.motor = motor
+    Specs.hours = hours
 
     db.session.commit()
     return specs_schema.jsonify(specs)
@@ -125,21 +130,18 @@ def specs_delete(sn):
 
 
 
+
+
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    task = db.Column(db.String, unique=False)
+    job = db.Column(db.String, unique=False)
     instructions = db.Column(db.String, unique=False)
 
-    
-    
-    
-    
-
-
-    def __init__(self, id, task, instructions):
+    def __init__(self,id,job,instructions):
         self.id = id
-        self.task = task
+        self.job = job
         self.instructions = instructions
+        
        
         
 
@@ -147,7 +149,7 @@ class Task(db.Model):
 
 class TaskSchema(ma.Schema):
     class Meta:
-        fields = ('id','task', 'instructions' )
+        fields = ('id','job', 'instructions' )
 
 
 task_schema = TaskSchema()
@@ -164,15 +166,13 @@ def get_task(id):
     task = Task.query.get(id)
     return task_schema.jsonify(task)
 
-@app.route('/Task', methods=["POST"])
+@app.route("/Task", methods=["POST"])
 def add_task():
     id = request.json['id']
-    task = request.json['task']
+    job = request.json['job']
     instructions = request.json['instructions']
     
-    
-
-    new_task = Task(id, task, instructions)
+    new_task = Task(id,job, instructions)
 
     db.session.add(new_task)
     db.session.commit()
@@ -181,16 +181,17 @@ def add_task():
 
     return task_schema.jsonify(task)
 
+
 @app.route("/Task/<id>", methods=["PUT"])
 def task_update(id):
     task = Task.query.get(id)
     id = request.json['id']
-    task = request.json['task']
+    job = request.json['job']
     instructions = request.json['instructions']
     
 
     Task.id = id
-    Task.task = task
+    Task.job = job
     Task.instructions = instructions
     
 
@@ -209,19 +210,21 @@ def task_delete(id):
 
 class IBST(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    specs_sn = db.Column(db.Integer, db.ForeignKey('specs.sn'), unique= False)
+    specs_sn = db.Column(db.String, db.ForeignKey('specs.sn'), unique= False)
     task_id = db.Column(db.Integer, db.ForeignKey('task.id'), unique=False)
     lastcompleted = db.Column(db.String, unique=False)
     nextdue = db.Column(db.String, unique=False)
+    notes = db.Column(db.String, unique=False)
 
-    def __init__(self, specs_sn, task_id, lastcompleted, nextdue):
+    def __init__(self, specs_sn, task_id, lastcompleted, nextdue, notes):
         self.specs_sn = specs_sn
         self.task_id = task_id
         self.lastcompleted = lastcompleted
         self.nextdue = nextdue
+        self.notes = notes
 class IBSTSchema(ma.Schema):
     class Meta:
-        fields = ('specs_sn', 'task_id', 'lastcompleted', 'nextdue')
+        fields = ('specs_sn', 'task_id', 'lastcompleted', 'nextdue','notes')
 
 
 
@@ -248,8 +251,9 @@ def add_ibst():
     task_id = request.json['task_id']
     lastcompleted = request.json['lastcompleted']
     nextdue = request.json['nextdue']
+    notes = request.json['notes']
 
-    new_ibst = IBST(specs_sn, task_id, lastcompleted, nextdue)
+    new_ibst = IBST(specs_sn, task_id, lastcompleted, nextdue, notes)
 
     db.session.add(new_ibst)
     db.session.commit()
@@ -265,11 +269,13 @@ def ibst_update(id):
     task_id = request.json['task_id']
     lastcompleted = request.json['lastcompleted']
     nextdue = request.json['nextdue']
+    notes = request.json['notes']
 
     IBST.specs_sn = specs_sn
     IBST.task_id = task_id
     IBST.lastcompleted = lastcompleted
     IBST.nextdue = nextdue
+    IBST.notes = notes
 
     db.session.commit()
     return ibst_schema.jsonify(ibst)
