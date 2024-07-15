@@ -15,9 +15,9 @@ db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
 class Specs(db.Model):
-    id = db.Column(db.Integer, unique=True)
+    id = db.Column(db.Integer(), unique=True)
     qrcode = db.Column(db.String(), unique=False)
-    sn = db.Column(db.String, primary_key=True)
+    sn = db.Column(db.String(), primary_key=True)
     name = db.Column(db.String(100), unique=False)
     designator = db.Column(db.String(144), unique=False)
     subdesignator = db.Column(db.String(20), unique=False)
@@ -172,7 +172,7 @@ def add_task():
     job = request.json['job']
     instructions = request.json['instructions']
     
-    new_task = Task(id,job, instructions)
+    new_task = Task(id, job, instructions)
 
     db.session.add(new_task)
     db.session.commit()
@@ -209,14 +209,15 @@ def task_delete(id):
 
 
 class IBST(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    specs_sn = db.Column(db.String, db.ForeignKey('specs.sn'), unique= False)
-    task_id = db.Column(db.Integer, db.ForeignKey('task.id'), unique=False)
-    lastcompleted = db.Column(db.String, unique=False)
-    nextdue = db.Column(db.String, unique=False)
-    notes = db.Column(db.String, unique=False)
+    id = db.Column(db.Integer(), primary_key=True)
+    specs_sn = db.Column(db.String(), unique= False)
+    task_id = db.Column(db.Integer(), db.ForeignKey('task.id'), unique=False)
+    lastcompleted = db.Column(db.String(), unique=False)
+    nextdue = db.Column(db.String(), unique=False)
+    notes = db.Column(db.String(), unique=False)
 
     def __init__(self, specs_sn, task_id, lastcompleted, nextdue, notes):
+        
         self.specs_sn = specs_sn
         self.task_id = task_id
         self.lastcompleted = lastcompleted
@@ -245,40 +246,56 @@ def get_ibst(id):
     ibst = IBST.query.get(id)
     return ibst_schema.jsonify(ibst)
 
-@app.route('/IBST', methods=["POST"])
+@app.route("/IBST", methods=["POST"])
 def add_ibst():
-    specs_sn = request.json['specs_sn']
-    task_id = request.json['task_id']
-    lastcompleted = request.json['lastcompleted']
-    nextdue = request.json['nextdue']
-    notes = request.json['notes']
 
-    new_ibst = IBST(specs_sn, task_id, lastcompleted, nextdue, notes)
+    
+    try:
+        specs_sn = request.json['specs_sn']
+        task_id = request.json['task_id']
+        lastcompleted = request.json['lastcompleted']
+        nextdue = request.json['nextdue']
+        notes = request.json['notes']
 
-    db.session.add(new_ibst)
-    db.session.commit()
+        new_ibst = IBST(specs_sn=specs_sn, task_id=task_id, lastcompleted=lastcompleted, nextdue=nextdue, notes=notes)
 
-    ibst = IBST.query.get(new_ibst.id)
+        db.session.add(new_ibst)
+        db.session.commit()
 
-    return ibst_schema.jsonify(ibst)
+        ibst = IBST.query.get(new_ibst.id)
+
+        return ibst_schema.jsonify(ibst)
+    except KeyError as e:
+        return jsonify({"error": f"Missing key in request: {e.args[0]}"}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+       
 
 @app.route("/IBST/<id>", methods=["PUT"])
 def ibst_update(id):
-    ibst = IBST.query.get(id)
-    specs_sn = request.json['specs_sn']
-    task_id = request.json['task_id']
-    lastcompleted = request.json['lastcompleted']
-    nextdue = request.json['nextdue']
-    notes = request.json['notes']
+    try:
+        ibst = IBST.query.get(id)
+        if ibst is None:
+            return jsonify({"message": "IBST not found"}), 404  # 404 Not Found
 
-    IBST.specs_sn = specs_sn
-    IBST.task_id = task_id
-    IBST.lastcompleted = lastcompleted
-    IBST.nextdue = nextdue
-    IBST.notes = notes
+        specs_sn = request.json.get('specs_sn')
+        task_id = request.json.get('task_id')
+        lastcompleted = request.json.get('lastcompleted')
+        nextdue = request.json.get('nextdue')
+        notes = request.json.get('notes')
 
-    db.session.commit()
-    return ibst_schema.jsonify(ibst)
+        ibst.specs_sn = specs_sn
+        ibst.task_id = task_id
+        ibst.lastcompleted = lastcompleted
+        ibst.nextdue = nextdue
+        ibst.notes = notes
+
+        db.session.commit()
+
+        return ibst_schema.jsonify(ibst)
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500  # 500 Internal Server Error
 
 @app.route("/IBST/<id>", methods=["DELETE"])
 def ibst_delete(id):
