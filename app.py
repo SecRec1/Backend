@@ -3,7 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 
 import os
-
+import logging
+from logging.handlers import RotatingFileHandler
 
 
 
@@ -13,6 +14,15 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.sqlite')
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
+
+handler = RotatingFileHandler('app.log', maxBytes=10000, backupCount=1)
+handler.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+
+app.logger.addHandler(handler)
+app.logger.setLevel(logging.DEBUG)
+
 
 class Specs(db.Model):
     id = db.Column(db.Integer(), unique=True)
@@ -89,31 +99,22 @@ def add_specs():
 
     return specs_schema.jsonify(specs)
 
-@app.route("/Specs/<sn>", methods=["PATCH"])
+@app.route("/Specs/<sn>", methods=["PUT"])
 def specs_update(sn):
     specs = Specs.query.get(sn)
-    qrcode = request.json['qrcode']
-    sn = request.json['sn']
-    name = request.json['name']
-    designator = request.json['designator']
-    subdesignator = request.json['subdesignator']
-    oil = request.json['oil']
-    coolant = request.json['coolant']
-    department = request.json['department']
-    motor = request.json['motor']
-    hours = request.json['hours']
+    data = request.get_json()
+    print(f"Received PUT request for SN: {sn} with data: {data}")
 
-    Specs.qrcode = qrcode
-    Specs.sn = sn
-    Specs.name = name
-    Specs.designator = designator
-    Specs.subdesignator = subdesignator
-    
-    Specs.oil = oil
-    Specs.coolant = coolant
-    Specs.department = department
-    Specs.motor = motor
-    Specs.hours = hours
+    specs.qrcode = data.get('qrcode', specs.qrcode)
+    specs.sn = data.get('sn', specs.sn)
+    specs.name = data.get('name', specs.name)
+    specs.designator = data.get('designator', specs.designator)
+    specs.subdesignator = data.get('subdesignator', specs.subdesignator)
+    specs.oil = data.get('oil', specs.oil)
+    specs.coolant = data.get('coolant', specs.coolant)
+    specs.department = data.get('department', specs.department)
+    specs.motor = data.get('motor', specs.motor)
+    specs.hours = data.get('hours', specs.hours)
 
     db.session.commit()
     return specs_schema.jsonify(specs)
@@ -182,7 +183,7 @@ def add_task():
     return task_schema.jsonify(task)
 
 
-@app.route("/Task/<id>", methods=["PUT"])
+@app.route("/Task/<id>", methods=["PATCH"])
 def task_update(id):
     task = Task.query.get(id)
     id = request.json['id']
@@ -215,17 +216,21 @@ class IBST(db.Model):
     lastcompleted = db.Column(db.String(), unique=False)
     nextdue = db.Column(db.String(), unique=False)
     notes = db.Column(db.String(), unique=False)
+    duration = db.Column(db.Integer(), unique=False)
+    hdselector = db.Column(db.String(), unique=False)
 
-    def __init__(self, specs_sn, task_id, lastcompleted, nextdue, notes):
+    def __init__(self, specs_sn, task_id, lastcompleted, nextdue, notes, duration,hdselector):
         
         self.specs_sn = specs_sn
         self.task_id = task_id
         self.lastcompleted = lastcompleted
         self.nextdue = nextdue
         self.notes = notes
+        self.duration = duration
+        self.hdselector = hdselector
 class IBSTSchema(ma.Schema):
     class Meta:
-        fields = ('specs_sn', 'task_id', 'lastcompleted', 'nextdue','notes')
+        fields = ('specs_sn', 'task_id', 'lastcompleted', 'nextdue','notes','duration', "hdselector")
 
 
 
@@ -256,8 +261,14 @@ def add_ibst():
         lastcompleted = request.json['lastcompleted']
         nextdue = request.json['nextdue']
         notes = request.json['notes']
+        duration = request.json['duration']
+        hdselector = request.json['hdselector']
 
-        new_ibst = IBST(specs_sn=specs_sn, task_id=task_id, lastcompleted=lastcompleted, nextdue=nextdue, notes=notes)
+        logging.debug(f"Received data: {request.json}")
+
+        new_ibst = IBST(specs_sn=specs_sn, task_id=task_id, lastcompleted=lastcompleted, nextdue=nextdue, notes=notes, duration=duration, hdselector=hdselector)
+
+        app.logger.debug(f"New IBST added: {new_ibst}")
 
         db.session.add(new_ibst)
         db.session.commit()
@@ -266,8 +277,10 @@ def add_ibst():
 
         return ibst_schema.jsonify(ibst)
     except KeyError as e:
+        logging.error(f"Missing key in request: {e.args[0]}")
         return jsonify({"error": f"Missing key in request: {e.args[0]}"}), 400
     except Exception as e:
+        logging.error(f"Error: {str(e)}")
         return jsonify({"error": str(e)}), 500
     
        
@@ -278,18 +291,24 @@ def ibst_update(id):
         ibst = IBST.query.get(id)
         if ibst is None:
             return jsonify({"message": "IBST not found"}), 404  # 404 Not Found
-
-        specs_sn = request.json.get('specs_sn')
-        task_id = request.json.get('task_id')
-        lastcompleted = request.json.get('lastcompleted')
-        nextdue = request.json.get('nextdue')
-        notes = request.json.get('notes')
-
-        ibst.specs_sn = specs_sn
-        ibst.task_id = task_id
-        ibst.lastcompleted = lastcompleted
-        ibst.nextdue = nextdue
-        ibst.notes = notes
+        
+        data = request.json
+        if 'id' in data:
+            ibst.id = data['id']
+        if 'specs_sn' in data:
+            ibst.specs_sn = data['specs_sn']
+        if 'task_id' in data:
+            ibst.task_id = data['task_id']
+        if 'lastcompleted' in data:
+            ibst.lastcompleted = data['lastcompleted']
+        if 'nextdue' in data:
+            ibst.nextdue = data['nextdue']
+        if 'notes' in data:
+            ibst.notes = data['notes']
+        if 'duration' in data:
+            ibst.duration = data['duration']
+        if 'hdselector' in data:
+            ibst.hdselector = data['hdselector']
 
         db.session.commit()
 
