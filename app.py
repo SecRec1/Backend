@@ -183,29 +183,16 @@ def add_task():
     return task_schema.jsonify(task)
 
 
-@app.route("/Task/<id>", methods=["PATCH"])
+@app.route("/Task/<id>", methods=["PUT"])
 def task_update(id):
     task = Task.query.get(id)
-    id = request.json['id']
-    job = request.json['job']
-    instructions = request.json['instructions']
-    
+    data = request.get_json()
 
-    Task.id = id
-    Task.job = job
-    Task.instructions = instructions
-    
+    task.job = data.get('job', task.job)
+    task.instructions = data.get('instructions', task.instructions)
 
     db.session.commit()
     return task_schema.jsonify(task)
-
-@app.route("/Task/<id>", methods=["DELETE"])
-def task_delete(id):
-    task = Task.query.get(id)
-    db.session.delete(task)
-    db.session.commit()
-
-    return "Task was successfully deleted"
 
 
 
@@ -335,20 +322,11 @@ class Admin(db.Model):
     username = db.Column(db.String(20), unique=True)
     password = db.Column(db.String(20), unique=True)
     
-    
-    
-    
-
-
     def __init__(self, id, username, password):
         self.id = id
         self.username = username
         self.password = password
        
-        
-        
-
-
 
 class AdminSchema(ma.Schema):
     class Meta:
@@ -358,25 +336,23 @@ class AdminSchema(ma.Schema):
 admin_schema = AdminSchema()
 admins_schema = AdminSchema(many=True)
 
-@app.route("/admin", methods=["GET"])
+@app.route("/Admin", methods=["GET"])
 def get_admins():
-    all_admins = Specs.query.all()
-    result = tasks_schema.dump(all_admins)
+    all_admins = Admin.query.all()
+    result = admins_schema.dump(all_admins)
     return jsonify(result)
 
-@app.route("/admin/<id>", methods=["GET"])
+@app.route("/Admin/<id>", methods=["GET"])
 def get_admin(id):
     admin = Admin.query.get(id)
     return admin_schema.jsonify(admin)
 
-@app.route('/admin', methods=["POST"])
+@app.route('/Admin', methods=["POST"])
 def add_admin():
     id = request.json['id']
     username = request.json['username']
     password = request.json['password']
    
-    
-
     new_admin = Admin(id, username, password)
 
     db.session.add(new_admin)
@@ -386,24 +362,19 @@ def add_admin():
 
     return admin_schema.jsonify(admin)
 
-@app.route("/admin/<id>", methods=["PUT"])
+@app.route("/Admin/<id>", methods=["PUT"])
 def admin_update(id):
     admin = Admin.query.get(id)
-    id = request.json['id']
-    username = request.json['username']
-    password = request.json['password']
-    
+    data = request.get_json()
 
-    Admin.id = id
-    Admin.username = username
-    Admin.password = password
-    
-    
+    admin.id = data.get('id', admin.id)
+    admin.username = data.get('username', admin.username)
+    admin.password = data.get('password', admin.password)
 
     db.session.commit()
     return admin_schema.jsonify(admin)
 
-@app.route("/admin/<id>", methods=["DELETE"])
+@app.route("/Admin/<id>", methods=["DELETE"])
 def admin_delete(id):
     admin = Admin.query.get(id)
     db.session.delete(admin)
