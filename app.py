@@ -321,16 +321,18 @@ class Admin(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True)
     password = db.Column(db.String(20), unique=True)
+    loggedin = db.Column(db.Boolean, default=False)
     
-    def __init__(self, id, username, password):
+    def __init__(self, id, username, password, loggedin):
         self.id = id
         self.username = username
         self.password = password
+        self.loggedin = loggedin
        
 
 class AdminSchema(ma.Schema):
     class Meta:
-        fields = ('id','username', 'password')
+        fields = ('id','username', 'password', 'loggedin')
 
 
 admin_schema = AdminSchema()
@@ -352,8 +354,9 @@ def add_admin():
     id = request.json['id']
     username = request.json['username']
     password = request.json['password']
+    loggedin = request.json['loggedin']
    
-    new_admin = Admin(id, username, password)
+    new_admin = Admin(id, username, password, loggedin)
 
     db.session.add(new_admin)
     db.session.commit()
@@ -370,6 +373,19 @@ def admin_update(id):
     admin.id = data.get('id', admin.id)
     admin.username = data.get('username', admin.username)
     admin.password = data.get('password', admin.password)
+    admin.loggedin = data.get('loggedin', admin.loggedin)
+
+    db.session.commit()
+    return admin_schema.jsonify(admin)
+
+@app.route("/Admin/<id>/status", methods=["PUT"])
+def update_admin_status(id):
+    admin = Admin.query.get(id)
+    if not admin:
+        return jsonify({"error": "Admin not found"}), 404
+
+    data = request.get_json()
+    admin.loggedin = data.get('loggedin', admin.loggedin)
 
     db.session.commit()
     return admin_schema.jsonify(admin)
