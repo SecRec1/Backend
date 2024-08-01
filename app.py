@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
-
+from flask_cors import CORS
 import os
 import logging
 from logging.handlers import RotatingFileHandler
@@ -9,7 +9,7 @@ from logging.handlers import RotatingFileHandler
 
 
 app = Flask(__name__)
-
+CORS(app, resources={r"/*": {"origins": "*"}})  # Allow all origins
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.sqlite')
 db = SQLAlchemy(app)
