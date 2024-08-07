@@ -197,7 +197,7 @@ def task_update(id):
 
 
 class IBST(db.Model):
-    id = db.Column(db.Integer(), primary_key=True)
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     specs_sn = db.Column(db.String(), unique= False)
     task_id = db.Column(db.Integer(), db.ForeignKey('task.id'), unique=False)
     lastcompleted = db.Column(db.String(), unique=False)
@@ -208,6 +208,7 @@ class IBST(db.Model):
 
     def __init__(self, specs_sn, task_id, lastcompleted, nextdue, notes, duration,hdselector):
         
+        
         self.specs_sn = specs_sn
         self.task_id = task_id
         self.lastcompleted = lastcompleted
@@ -217,7 +218,7 @@ class IBST(db.Model):
         self.hdselector = hdselector
 class IBSTSchema(ma.Schema):
     class Meta:
-        fields = ('specs_sn', 'task_id', 'lastcompleted', 'nextdue','notes','duration', "hdselector")
+        fields = ('id','specs_sn', 'task_id', 'lastcompleted', 'nextdue','notes','duration', "hdselector")
 
 
 
@@ -243,6 +244,7 @@ def add_ibst():
 
     
     try:
+        
         specs_sn = request.json['specs_sn']
         task_id = request.json['task_id']
         lastcompleted = request.json['lastcompleted']
