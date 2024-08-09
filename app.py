@@ -23,7 +23,6 @@ handler.setFormatter(formatter)
 app.logger.addHandler(handler)
 app.logger.setLevel(logging.DEBUG)
 
-
 class Specs(db.Model):
     id = db.Column(db.Integer(), unique=True)
     qrcode = db.Column(db.String(), unique=False)
@@ -36,6 +35,7 @@ class Specs(db.Model):
     department =db.Column(db.String(20), unique=False)
     motor = db.Column(db.String(), unique=False)
     hours = db.Column(db.String(),unique=False)
+
 
 
     def __init__(self,id,qrcode,sn, name, designator, subdesignator,oil,coolant,department,motor,hours):
