@@ -127,6 +127,15 @@ def specs_delete(sn):
 
     return "Specs were successfully deleted"
 
+@app.route("/Specs/id/<int:id>", methods=["DELETE"])
+def delete_by_id(id):
+    specs = Specs.query.filter_by(id=id).first()
+    if specs:
+        db.session.delete(specs)
+        db.session.commit()
+        return "Specs successfully deleted", 200
+    return "Specs not found", 404
+
 
 
 

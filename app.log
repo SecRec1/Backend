@@ -1,32 +1,66 @@
-2024-07-22 13:28:13,782 - DEBUG - New IBST added: <IBST (transient 1717481953984)>
-2024-07-22 13:31:32,464 - DEBUG - New IBST added: <IBST (transient 1848474263120)>
-2024-07-22 13:33:14,246 - DEBUG - New IBST added: <IBST (transient 1848474270608)>
-2024-07-22 13:36:57,757 - DEBUG - New IBST added: <IBST (transient 1842336208496)>
-2024-07-22 13:37:47,429 - DEBUG - New IBST added: <IBST (transient 1842335896144)>
-2024-07-22 13:57:01,642 - DEBUG - New IBST added: <IBST (transient 1842336070352)>
-2024-07-23 09:09:01,161 - DEBUG - New IBST added: <IBST (transient 2100887740416)>
-2024-07-23 09:09:33,059 - DEBUG - New IBST added: <IBST (transient 2100887741760)>
-2024-07-23 09:10:34,732 - DEBUG - New IBST added: <IBST (transient 2100887603632)>
-2024-07-23 09:10:48,824 - DEBUG - New IBST added: <IBST (transient 2100887225744)>
-2024-07-23 09:10:48,954 - DEBUG - New IBST added: <IBST (transient 2100887485184)>
-2024-07-23 09:15:45,339 - DEBUG - New IBST added: <IBST (transient 2100887604592)>
-2024-07-23 09:17:29,844 - DEBUG - New IBST added: <IBST (transient 2100887947792)>
-2024-07-25 10:11:17,281 - DEBUG - New IBST added: <IBST (transient 2703793520176)>
-2024-07-25 11:58:09,653 - DEBUG - New IBST added: <IBST (transient 1755358136512)>
-2024-07-25 11:58:40,650 - DEBUG - New IBST added: <IBST (transient 1755358036288)>
-2024-07-31 11:13:05,001 - DEBUG - New IBST added: <IBST (transient 2549583167568)>
-2024-07-31 11:13:25,922 - DEBUG - New IBST added: <IBST (transient 2549583091984)>
-2024-08-06 13:15:30,609 - DEBUG - New IBST added: <IBST (transient 2589362668944)>
-2024-08-06 13:38:24,290 - DEBUG - New IBST added: <IBST (transient 2589362667792)>
-2024-08-06 14:03:50,596 - DEBUG - New IBST added: <IBST (transient 2589362257408)>
-2024-08-07 10:39:45,767 - DEBUG - New IBST added: <IBST (transient 2589362826528)>
-2024-08-07 10:40:07,467 - DEBUG - New IBST added: <IBST (transient 2589362821344)>
-2024-08-07 10:40:42,689 - DEBUG - New IBST added: <IBST (transient 2589362820576)>
-2024-08-07 11:15:09,290 - DEBUG - New IBST added: <IBST (transient 2589362672688)>
-2024-08-07 11:15:27,533 - DEBUG - New IBST added: <IBST (transient 2589362920608)>
-2024-08-07 11:15:46,630 - DEBUG - New IBST added: <IBST (transient 2589362919552)>
-2024-08-07 11:55:37,738 - DEBUG - New IBST added: <IBST (transient 2208203613696)>
-2024-08-07 11:56:09,284 - DEBUG - New IBST added: <IBST (transient 2208208031328)>
-2024-08-07 11:56:37,985 - DEBUG - New IBST added: <IBST (transient 2208208036032)>
-2024-08-07 13:10:28,187 - DEBUG - New IBST added: <IBST (transient 3141009195136)>
-2024-08-07 13:14:40,253 - DEBUG - New IBST added: <IBST (transient 3141009203872)>
+2024-08-20 13:26:42,016 - ERROR - Exception on /Specs/5 [DELETE]
+Traceback (most recent call last):
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\session.py", line 3478, in delete
+    state = attributes.instance_state(instance)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute '_sa_instance_state'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask_cors\extension.py", line 178, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\Desktop\MaintTracker\Backend\app.py", line 125, in specs_delete
+    db.session.delete(specs)
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\scoping.py", line 672, in delete
+    return self._proxied.delete(instance)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\session.py", line 3480, in delete
+    raise exc.UnmappedInstanceError(instance) from err
+sqlalchemy.orm.exc.UnmappedInstanceError: Class 'builtins.NoneType' is not mapped
+2024-08-20 13:27:01,379 - ERROR - Exception on /Specs/5 [DELETE]
+Traceback (most recent call last):
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\session.py", line 3478, in delete
+    state = attributes.instance_state(instance)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute '_sa_instance_state'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask_cors\extension.py", line 178, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\Desktop\MaintTracker\Backend\app.py", line 125, in specs_delete
+    db.session.delete(specs)
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\scoping.py", line 672, in delete
+    return self._proxied.delete(instance)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\session.py", line 3480, in delete
+    raise exc.UnmappedInstanceError(instance) from err
+sqlalchemy.orm.exc.UnmappedInstanceError: Class 'builtins.NoneType' is not mapped
