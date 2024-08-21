@@ -1,4 +1,4 @@
-2024-08-20 13:26:42,016 - ERROR - Exception on /Specs/5 [DELETE]
+2024-08-21 07:39:44,911 - ERROR - Exception on /IBST/1 [DELETE]
 Traceback (most recent call last):
   File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\session.py", line 3478, in delete
     state = attributes.instance_state(instance)
@@ -23,41 +23,8 @@ Traceback (most recent call last):
   File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 865, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\Desktop\MaintTracker\Backend\app.py", line 125, in specs_delete
-    db.session.delete(specs)
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\scoping.py", line 672, in delete
-    return self._proxied.delete(instance)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\session.py", line 3480, in delete
-    raise exc.UnmappedInstanceError(instance) from err
-sqlalchemy.orm.exc.UnmappedInstanceError: Class 'builtins.NoneType' is not mapped
-2024-08-20 13:27:01,379 - ERROR - Exception on /Specs/5 [DELETE]
-Traceback (most recent call last):
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\session.py", line 3478, in delete
-    state = attributes.instance_state(instance)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'NoneType' object has no attribute '_sa_instance_state'
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 1473, in wsgi_app
-    response = self.full_dispatch_request()
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 882, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask_cors\extension.py", line 178, in wrapped_function
-    return cors_after_request(app.make_response(f(*args, **kwargs)))
-                                                ^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 880, in full_dispatch_request
-    rv = self.dispatch_request()
-         ^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 865, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\Desktop\MaintTracker\Backend\app.py", line 125, in specs_delete
-    db.session.delete(specs)
+  File "C:\Users\Chris\Desktop\MaintTracker\Backend\app.py", line 320, in ibst_delete
+    db.session.delete(ibst)
   File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\scoping.py", line 672, in delete
     return self._proxied.delete(instance)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
