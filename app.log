@@ -64,3 +64,11 @@ Traceback (most recent call last):
   File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\session.py", line 3480, in delete
     raise exc.UnmappedInstanceError(instance) from err
 sqlalchemy.orm.exc.UnmappedInstanceError: Class 'builtins.NoneType' is not mapped
+2024-08-21 07:58:29,372 - DEBUG - New IBST added: <IBST (transient 2240320535056)>
+2024-08-21 08:29:28,950 - DEBUG - New IBST added: <IBST (transient 2240320880272)>
+2024-08-21 08:30:09,351 - DEBUG - New IBST added: <IBST (transient 2240319614816)>
+2024-08-21 08:32:27,919 - DEBUG - New IBST added: <IBST (transient 2240320870432)>
+2024-08-21 08:36:08,809 - DEBUG - New IBST added: <IBST (transient 2240320873264)>
+2024-08-21 08:37:09,562 - DEBUG - New IBST added: <IBST (transient 2240320743344)>
+2024-08-21 08:37:46,995 - DEBUG - New IBST added: <IBST (transient 2240320746224)>
+2024-08-21 08:51:28,387 - DEBUG - New IBST added: <IBST (transient 2240320910112)>
