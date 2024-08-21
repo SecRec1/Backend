@@ -72,3 +72,4 @@ sqlalchemy.orm.exc.UnmappedInstanceError: Class 'builtins.NoneType' is not mappe
 2024-08-21 08:37:09,562 - DEBUG - New IBST added: <IBST (transient 2240320743344)>
 2024-08-21 08:37:46,995 - DEBUG - New IBST added: <IBST (transient 2240320746224)>
 2024-08-21 08:51:28,387 - DEBUG - New IBST added: <IBST (transient 2240320910112)>
+2024-08-21 09:14:06,952 - DEBUG - New IBST added: <IBST (transient 2240320912896)>
