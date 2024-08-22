@@ -30,6 +30,7 @@ SQLAlchemy==2.0.29
 tldextract==5.1.2
 typing_extensions==4.11.0
 urllib3==2.2.1
+waitress==2.1.2
 Werkzeug==3.0.2
 zope.event==5.0
 zope.interface==6.3
