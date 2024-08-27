@@ -1,4 +1,4 @@
-2024-08-21 12:53:25,520 - ERROR - Exception on /Specs [POST]
+2024-08-21 12:55:26,877 - ERROR - Exception on /Specs [POST]
 Traceback (most recent call last):
   File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\engine\base.py", line 1971, in _exec_single_context
     self.dialect.do_execute(
@@ -82,5 +82,5 @@ Traceback (most recent call last):
     cursor.execute(statement, parameters)
 sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: specs.sn
 [SQL: INSERT INTO specs (id, qrcode, sn, name, designator, subdesignator, oil, coolant, department, motor, hours) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
-[parameters: ('9', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAAAXNSR0IArs4c6QAAEN5JREFUeF7tXXnIVUUUH03D1EoLRdMCS1PBXMo0d5HKsMXCXHLDNMsF1NRM3AM ... (5576 characters truncated) ... iYMd1eDVhwgQjPQ11BPloXFsd66VRSqnLaXWQpJ20UMGcLGE+cQGoo5/IYW4+KWKS8CRJ2YLlCk4yiJKUFQEoCfeUEgHI8k80QLQgXXGhYRxQKJ2uCEDJBOBfsWejSKKK4gUAAAAASUVORK5CYII=', 'SH11578-3', 'Converyor', 'Untha XR', 'Discharge', 'None', 'None', 'ShredPlant', 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQ ... (288377 characters truncated) ... 3DS2q5PViDSL8UPh+h+WSycrzv4/xoorP6tDu/vKRG/xW8BSErI9r6H5RRN498AS2bAXECjrjOBRRS+rR7v7yiFPjH8OdDjadbm3LgDO45/yawLr9u3whYXD28JiaOM7VOBRRXo4fA0aivK5Emf/Z', '502')]
+[parameters: ('9', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAAAXNSR0IArs4c6QAAEN5JREFUeF7tXXnIVUUUH03D1EoLRdMCS1PBXMo0d5HKsMXCXHLDNMsF1NRM3AM ... (5576 characters truncated) ... iYMd1eDVhwgQjPQ11BPloXFsd66VRSqnLaXWQpJ20UMGcLGE+cQGoo5/IYW4+KWKS8CRJ2YLlCk4yiJKUFQEoCfeUEgHI8k80QLQgXXGhYRxQKJ2uCEDJBOBfsWejSKKK4gUAAAAASUVORK5CYII=', 'SH11578-3', 'Converyor', 'Untha XR', 'Crossbelt', 'None', 'None', 'ShredPlant', 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQ ... (269853 characters truncated) ... M5378dTj8qhge96l8K/GPg3SdG1HWLcW2m6tCl1p93a3a3NvNGyhsxuMHIyMqRwahOnygndfQlu5ZWzXM+FfEGpSeGV0pr2ZtNtvMkhtS58uNmyWKjtnv617hpMzHS7MkKT5KclR/dFYy3NUf/9k=', '502')]
 (Background on this error at: https://sqlalche.me/e/20/gkpj)
