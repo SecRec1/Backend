@@ -410,5 +410,402 @@ def admin_delete(id):
     return "Admin was successfully deleted"
 
 
+
+class Notes(db.Model):
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    note = db.Column(db.String(),unique=False)
+    date = db.Column(db.String(),nullable=False)
+    retired = db.Column(db.String(),nullable=False) 
+
+    def __init__(self, note, date, retired):
+        
+        self.note = note
+        self.date = date
+        self.retired = retired
+        
+        
+        
+class NotesSchema(ma.Schema):
+    class Meta:
+        fields = ("id", "note", "date", "retired")
+
+
+
+
+
+note_schema = NotesSchema()
+notes_schema = NotesSchema(many=True)
+
+
+@app.route("/Notes", methods=["GET"])
+def get_notes():
+    all_notes = Notes.query.all()
+    result = notes_schema.dump(all_notes)
+    return jsonify(result)
+
+
+@app.route("/Notes/<id>", methods=["GET"])
+def get_note(id):
+    note = Notes.query.get(id)
+    return note_schema.jsonify(note)
+
+@app.route("/Notes", methods=["POST"])
+def add_note():
+
+    try:
+        note = request.json['note']
+        date = request.json['date']
+        retired = request.json['retired']
+        
+        logging.debug(f"Received data: {request.json}")
+
+        new_note = Notes(note=note, date=date, retired=retired)
+
+        app.logger.debug(f"New Note added: {new_note}")
+        
+        db.session.add(new_note)
+        db.session.commit()
+
+        note = Notes.query.get(new_note.id)
+        return note_schema.jsonify(note)
+    except KeyError as e:
+        logging.error(f"Missing key in request: {e.args[0]}")
+        return jsonify({"error": f"Missing key in request: {e.args[0]}"}), 400
+    except Exception as e:
+        logging.error(f"Error: {str(e)}")
+        return jsonify({"error": str(e)}), 500
+    
+
+@app.route("/Notes/<id>", methods=["PUT"])
+def note_update(id):
+    try:
+        note = Notes.query.get(id)
+        if note is None:
+            return jsonify({"message": "Note not found"}), 404  # 404 Not Found
+        
+        data = request.json
+        if 'id' in data:
+            note.id = data['id']
+        if 'note' in data:
+            note.note = data['note']
+        if 'date' in data:
+            note.date = data['date']
+        if'retired' in data:
+            note.retired = data['retired']
+                    
+        db.session.commit()
+        return note_schema.jsonify(note)
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500  # 500 Internal Server Error
+
+
+@app.route("/Notes/<id>", methods=["DELETE"])
+def note_delete(id):
+    note = Notes.query.get(id)
+    db.session.delete(note)
+    db.session.commit()
+    return "Note was successfully deleted"
+
+
+class Toolneeds(db.Model):
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    tool = db.Column(db.String(), unique=False)
+    size = db.Column(db.String(), unique=False)
+    count = db.Column(db.Integer(),unique=False)
+
+    def __init__(self, tool, size, count):
+        
+        self.tool = tool
+        self.size = size
+        self.count = count
+
+
+class ToolneedsSchema(ma.Schema):
+    class Meta:
+        fields = ("id", "tool", "size", "count")
+
+
+
+toolneed_schema = ToolneedsSchema()
+toolneeds_schema = ToolneedsSchema(many=True)
+
+@app.route("/ToolNeeds", methods=["GET"])
+def get_toolneeds():
+    all_toolneeds = Toolneeds.query.all()
+    result = toolneeds_schema.dump(all_toolneeds)
+    return jsonify(result)
+
+@app.route("/ToolNeeds/<id>", methods=["GET"])
+def get_toolneed(id):
+    toolneed = Toolneeds.query.get(id)
+    return toolneed_schema.jsonify(toolneed)
+
+@app.route("/ToolNeeds", methods=["POST"])
+def add_toolneed():
+    tool = request.json['tool']
+    size = request.json['size']
+    count = request.json['count']
+    
+    new_toolneed = Toolneeds(tool=tool, size=size, count=count)
+    
+    db.session.add(new_toolneed)
+    db.session.commit()
+    
+    toolneed = Toolneeds.query.get(new_toolneed.id)
+    return toolneed_schema.jsonify(toolneed)
+
+@app.route("/ToolNeeds/<id>", methods=["PUT"])
+def toolneed_update(id):
+    toolneed = Toolneeds.query.get(id)
+    if toolneed is None:
+        return jsonify({"message": "ToolNeed not found"}), 404  # 404 Not Found
+    
+    data = request.json
+    if 'id' in data:
+        toolneed.id = data['id']
+    if 'tool' in data:
+        toolneed.tool = data['tool']
+    if'size' in data:
+        toolneed.size = data['size']
+    if 'count' in data:
+        toolneed.count = data['count']
+                    
+    db.session.commit()
+    return toolneed_schema.jsonify(toolneed)
+
+@app.route("/ToolNeeds/<id>", methods=["DELETE"])
+def toolneed_delete(id):
+    toolneed = Toolneeds.query.get(id)
+    db.session.delete(toolneed)
+    db.session.commit()
+    return "ToolNeed was successfully deleted"
+
+
+class Parts(db.Model):
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    part = db.Column(db.String(), unique=False)
+    quantity = db.Column(db.Integer(),unique=False)
+    ordered = db.Column(db.String(), nullable=False)
+    eta = db.Column(db.String(), nullable=False)
+
+    def __init__(self, part, quantity, ordered, eta):
+        
+        self.part = part
+        self.quantity = quantity
+        self.ordered = ordered
+        self.eta = eta
+
+class PartsSchema(ma.Schema):
+    class Meta:
+        fields = ("id", "part", "quantity", "ordered", "eta")
+
+
+part_schema = PartsSchema()
+
+parts_schema = PartsSchema(many=True)
+
+@app.route("/Parts", methods=["GET"])
+def get_parts():
+    all_parts = Parts.query.all()
+    result = parts_schema.dump(all_parts)
+    return jsonify(result)
+
+@app.route("/Parts/<id>", methods=["GET"])
+def get_part(id):
+    part = Parts.query.get(id)
+    return part_schema.jsonify(part)
+
+@app.route("/Parts", methods=["POST"])
+def add_part():
+    part = request.json['part']
+    quantity = request.json['quantity']
+    ordered = request.json['ordered']
+    eta = request.json['eta']
+    
+    new_part = Parts(part=part, quantity=quantity, ordered=ordered, eta=eta)
+    
+    db.session.add(new_part)
+    db.session.commit()
+    
+    part = Parts.query.get(new_part.id)
+    return part_schema.jsonify(part)
+
+@app.route("/Parts/<id>", methods=["PUT"])
+def part_update(id):
+    part = Parts.query.get(id)
+    if part is None:
+        return jsonify({"message": "Part not found"}), 404  # 404 Not Found
+    
+    data = request.json
+    if 'id' in data:
+        part.id = data['id']
+    if 'part' in data:
+        part.part = data['part']
+    if 'quantity' in data:
+        part.quantity = data['quantity']
+    if 'ordered' in data:
+        part.ordered = data['ordered']
+    if 'eta' in data:
+        part.eta = data['eta']
+                    
+    db.session.commit()
+    return part_schema.jsonify(part)
+
+@app.route("/Parts/<id>", methods=["DELETE"])
+def part_delete(id):
+    part = Parts.query.get(id)
+    db.session.delete(part)
+    db.session.commit()
+    return "Part was successfully deleted"
+
+
+class Contractors(db.Model):
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    company = db.Column(db.String(), unique=False)
+    onsitestart = db.Column(db.String(), unique=False)
+    onsiteend = db.Column(db.String(), unique=False)
+    indoor = db.Column(db.String(), unique=False)
+
+    def __init__(self, company, onsitestart, onsiteend, indoor):
+        
+        self.company = company
+        self.onsitestart = onsitestart
+        self.onsiteend = onsiteend
+        self.indoor = indoor
+
+class ContractorsSchema(ma.Schema):
+    class Meta:
+        fields = ("id", "company", "onsitestart", "onsiteend", "indoor")
+
+    
+contractor_schema = ContractorsSchema()
+
+contractors_schema = ContractorsSchema(many=True)
+
+@app.route("/Contractors", methods=["GET"])
+def get_contractors():
+    all_contractors = Contractors.query.all()
+    result = contractors_schema.dump(all_contractors)
+    return jsonify(result)
+
+@app.route("/Contractors/<id>", methods=["GET"])
+def get_contractor(id):
+    contractor = Contractors.query.get(id)
+    return contractor_schema.jsonify(contractor)
+
+@app.route("/Contractors", methods=["POST"])
+def add_contractor():
+    company = request.json['company']
+    onsitestart = request.json['onsitestart']
+    onsiteend = request.json['onsiteend']
+    indoor = request.json['indoor']
+    
+    new_contractor = Contractors(company=company, onsitestart=onsitestart, onsiteend=onsiteend, indoor=indoor)
+    
+    db.session.add(new_contractor)
+    db.session.commit()
+    
+    contractor = Contractors.query.get(new_contractor.id)
+    return contractor_schema.jsonify(contractor)
+
+@app.route("/Contractors/<id>", methods=["PUT"])
+def contractor_update(id):
+    contractor = Contractors.query.get(id)
+    if contractor is None:
+        return jsonify({"message": "Contractor not found"}), 404  # 404 Not Found
+    
+    data = request.json
+    if 'id' in data:
+        contractor.id = data['id']
+    if 'company' in data:
+        contractor.company = data['company']
+    if 'onsitestart' in data:
+        contractor.onsitestart = data['onsitestart']
+    if 'onsiteend' in data:
+        contractor.onsiteend = data['onsiteend']
+    if 'indoor' in data:
+        contractor.indoor = data['indoor']
+                    
+    db.session.commit()
+    return contractor_schema.jsonify(contractor)
+
+@app.route("/Contractors/<id>", methods=["DELETE"])
+def contractor_delete(id):
+    contractor = Contractors.query.get(id)
+    db.session.delete(contractor)
+    db.session.commit()
+    return "Contractor was successfully deleted"
+
+
+
+class Jobs(db.Model):
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    job = db.Column(db.String(), unique=False)
+    reasons = db.Column(db.String(),unique=False)
+
+    def __init__(self, job, reasons):
+        
+        self.job = job
+        self.reasons = reasons
+
+class JobsSchema(ma.Schema):
+    class Meta:
+        fields = ("id", "job", "reasons")
+
+
+job_schema = JobsSchema()
+
+jobs_schema = JobsSchema(many=True)
+
+@app.route("/Jobs", methods=["GET"])
+def get_jobs():
+    all_jobs = Jobs.query.all()
+    result = jobs_schema.dump(all_jobs)
+    return jsonify(result)
+
+@app.route("/Jobs/<id>", methods=["GET"])
+def get_job(id):
+    job = Jobs.query.get(id)
+    return job_schema.jsonify(job)
+
+@app.route("/Jobs", methods=["POST"])
+def add_job():
+    job = request.json['job']
+    reasons = request.json['reasons']
+    
+    new_job = Jobs(job=job, reasons=reasons)
+    
+    db.session.add(new_job)
+    db.session.commit()
+    
+    job = Jobs.query.get(new_job.id)
+    return job_schema.jsonify(job)
+
+@app.route("/Jobs/<id>", methods=["PUT"])
+def job_update(id):
+    job = Jobs.query.get(id)
+    if job is None:
+        return jsonify({"message": "Job not found"}), 404  # 404 Not Found
+    
+    data = request.json
+    if 'id' in data:
+        job.id = data['id']
+    if 'job' in data:
+        job.job = data['job']
+    if'reasons' in data:
+        job.reasons = data['reasons']
+                    
+    db.session.commit()
+    return job_schema.jsonify(job)
+
+@app.route("/Jobs/<id>", methods=["DELETE"])
+def job_delete(id):
+    job = Jobs.query.get(id)
+    db.session.delete(job)
+    db.session.commit()
+    return "Job was successfully deleted"
+
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

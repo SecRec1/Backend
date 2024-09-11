@@ -1,13 +1,4 @@
-2024-08-21 12:55:26,877 - ERROR - Exception on /Specs [POST]
-Traceback (most recent call last):
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\engine\base.py", line 1971, in _exec_single_context
-    self.dialect.do_execute(
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\engine\default.py", line 919, in do_execute
-    cursor.execute(statement, parameters)
-sqlite3.IntegrityError: UNIQUE constraint failed: specs.sn
-
-The above exception was the direct cause of the following exception:
-
+2024-08-30 13:07:07,953 - ERROR - Exception on /Specs/M6274 -1 [PUT]
 Traceback (most recent call last):
   File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 1473, in wsgi_app
     response = self.full_dispatch_request()
@@ -24,63 +15,122 @@ Traceback (most recent call last):
   File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 865, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\Desktop\MaintTracker\Backend\app.py", line 96, in add_specs
-    db.session.commit()
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\scoping.py", line 597, in commit
-    return self._proxied.commit()
-           ^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\session.py", line 1972, in commit
-    trans.commit(_to_root=True)
-  File "<string>", line 2, in commit
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 139, in _go
-    ret_value = fn(self, *arg, **kw)
-                ^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\session.py", line 1257, in commit
-    self._prepare_impl()
-  File "<string>", line 2, in _prepare_impl
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 139, in _go
-    ret_value = fn(self, *arg, **kw)
-                ^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\session.py", line 1232, in _prepare_impl
-    self.session.flush()
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\session.py", line 4296, in flush
-    self._flush(objects)
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\session.py", line 4431, in _flush
-    with util.safe_reraise():
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
-    raise exc_value.with_traceback(exc_tb)
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\session.py", line 4392, in _flush
-    flush_context.execute()
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
-    rec.execute(self)
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
-    util.preloaded.orm_persistence.save_obj(
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
-    _emit_insert_statements(
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1048, in _emit_insert_statements
-    result = connection.execute(
-             ^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\engine\base.py", line 1422, in execute
-    return meth(
-           ^^^^^
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\sql\elements.py", line 514, in _execute_on_connection
-    return connection._execute_clauseelement(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\engine\base.py", line 1644, in _execute_clauseelement
-    ret = self._execute_context(
-          ^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\engine\base.py", line 1850, in _execute_context
-    return self._exec_single_context(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\engine\base.py", line 1990, in _exec_single_context
-    self._handle_dbapi_exception(
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\engine\base.py", line 2357, in _handle_dbapi_exception
-    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\engine\base.py", line 1971, in _exec_single_context
-    self.dialect.do_execute(
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\engine\default.py", line 919, in do_execute
-    cursor.execute(statement, parameters)
-sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: specs.sn
-[SQL: INSERT INTO specs (id, qrcode, sn, name, designator, subdesignator, oil, coolant, department, motor, hours) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
-[parameters: ('9', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAAAXNSR0IArs4c6QAAEN5JREFUeF7tXXnIVUUUH03D1EoLRdMCS1PBXMo0d5HKsMXCXHLDNMsF1NRM3AM ... (5576 characters truncated) ... iYMd1eDVhwgQjPQ11BPloXFsd66VRSqnLaXWQpJ20UMGcLGE+cQGoo5/IYW4+KWKS8CRJ2YLlCk4yiJKUFQEoCfeUEgHI8k80QLQgXXGhYRxQKJ2uCEDJBOBfsWejSKKK4gUAAAAASUVORK5CYII=', 'SH11578-3', 'Converyor', 'Untha XR', 'Crossbelt', 'None', 'None', 'ShredPlant', 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQ ... (269853 characters truncated) ... M5378dTj8qhge96l8K/GPg3SdG1HWLcW2m6tCl1p93a3a3NvNGyhsxuMHIyMqRwahOnygndfQlu5ZWzXM+FfEGpSeGV0pr2ZtNtvMkhtS58uNmyWKjtnv617hpMzHS7MkKT5KclR/dFYy3NUf/9k=', '502')]
-(Background on this error at: https://sqlalche.me/e/20/gkpj)
+  File "C:\Users\Chris\Desktop\MaintTracker\Backend\app.py", line 108, in specs_update
+    specs.qrcode = data.get('qrcode', specs.qrcode)
+                                      ^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'qrcode'
+2024-08-30 13:08:24,632 - ERROR - Exception on /Specs [POST]
+Traceback (most recent call last):
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask_cors\extension.py", line 178, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\Desktop\MaintTracker\Backend\app.py", line 90, in add_specs
+    motor = request.json['motor']
+            ~~~~~~~~~~~~^^^^^^^^^
+KeyError: 'motor'
+2024-08-30 13:10:09,413 - ERROR - Exception on /Specs/M6274 -1 [PUT]
+Traceback (most recent call last):
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask_cors\extension.py", line 178, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\Desktop\MaintTracker\Backend\app.py", line 108, in specs_update
+    specs.qrcode = data.get('qrcode', specs.qrcode)
+                                      ^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'qrcode'
+2024-09-05 09:18:33,075 - DEBUG - New IBST added: <IBST (transient 2042809028144)>
+2024-09-05 09:19:50,662 - DEBUG - New IBST added: <IBST (transient 2042809108672)>
+2024-09-05 09:20:36,174 - DEBUG - New IBST added: <IBST (transient 2042809028144)>
+2024-09-05 09:20:52,404 - DEBUG - New IBST added: <IBST (transient 2042809118560)>
+2024-09-05 09:21:21,904 - DEBUG - New IBST added: <IBST (transient 2042808784736)>
+2024-09-05 09:22:07,892 - DEBUG - New IBST added: <IBST (transient 2042809109872)>
+2024-09-05 09:22:34,318 - DEBUG - New IBST added: <IBST (transient 2042808780320)>
+2024-09-05 09:23:02,293 - DEBUG - New IBST added: <IBST (transient 2042809121248)>
+2024-09-05 09:23:35,465 - DEBUG - New IBST added: <IBST (transient 2042809033616)>
+2024-09-05 09:24:06,121 - DEBUG - New IBST added: <IBST (transient 2042808783440)>
+2024-09-05 09:25:23,170 - DEBUG - New IBST added: <IBST (transient 2042809107280)>
+2024-09-05 09:26:15,791 - DEBUG - New IBST added: <IBST (transient 2042809119568)>
+2024-09-06 11:04:54,172 - DEBUG - New IBST added: <IBST (transient 2042809425920)>
+2024-09-06 11:05:51,608 - DEBUG - New IBST added: <IBST (transient 2042808780992)>
+2024-09-06 11:08:20,775 - DEBUG - New IBST added: <IBST (transient 2042809110880)>
+2024-09-06 11:08:53,341 - DEBUG - New IBST added: <IBST (transient 2042809433888)>
+2024-09-06 11:09:24,422 - DEBUG - New IBST added: <IBST (transient 2042809420160)>
+2024-09-06 11:10:12,236 - DEBUG - New IBST added: <IBST (transient 2042809400592)>
+2024-09-06 11:10:48,357 - DEBUG - New IBST added: <IBST (transient 2042809428272)>
+2024-09-09 13:53:47,895 - ERROR - Exception on /Admin [POST]
+Traceback (most recent call last):
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask_cors\extension.py", line 178, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\Desktop\MaintTracker\Backend\app.py", line 365, in add_admin
+    id = request.json['id']
+         ~~~~~~~~~~~~^^^^^^
+TypeError: list indices must be integers or slices, not str
+2024-09-09 14:18:17,320 - ERROR - Exception on /Admin [POST]
+Traceback (most recent call last):
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask_cors\extension.py", line 178, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\Desktop\MaintTracker\Backend\app.py", line 366, in add_admin
+    username = request.json['username']
+               ~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'username'
+2024-09-09 14:19:52,884 - DEBUG - New IBST added: <IBST (transient 2409339253584)>
+2024-09-09 14:20:01,552 - DEBUG - New IBST added: <IBST (transient 2409339247008)>
+2024-09-09 14:20:10,888 - DEBUG - New IBST added: <IBST (transient 2409339256512)>
+2024-09-09 14:20:18,078 - DEBUG - New IBST added: <IBST (transient 2409339247344)>
+2024-09-09 14:21:14,233 - DEBUG - New IBST added: <IBST (transient 2409339054288)>
+2024-09-09 14:21:23,854 - DEBUG - New IBST added: <IBST (transient 2409339055968)>
+2024-09-09 14:21:32,066 - DEBUG - New IBST added: <IBST (transient 2409339055104)>
+2024-09-09 14:21:40,362 - DEBUG - New IBST added: <IBST (transient 2409339049632)>
+2024-09-09 14:21:55,053 - DEBUG - New IBST added: <IBST (transient 2409339373232)>
+2024-09-09 14:22:09,726 - DEBUG - New IBST added: <IBST (transient 2409339374816)>
+2024-09-09 14:22:22,693 - DEBUG - New IBST added: <IBST (transient 2409339376496)>
+2024-09-09 14:23:47,325 - DEBUG - New IBST added: <IBST (transient 2409339056448)>

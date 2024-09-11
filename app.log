@@ -1,13 +1,36 @@
-2024-08-26 14:15:18,765 - ERROR - Exception on /Specs [POST]
-Traceback (most recent call last):
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\engine\base.py", line 1971, in _exec_single_context
-    self.dialect.do_execute(
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\engine\default.py", line 919, in do_execute
-    cursor.execute(statement, parameters)
-sqlite3.IntegrityError: UNIQUE constraint failed: specs.sn
-
-The above exception was the direct cause of the following exception:
-
+2024-09-09 14:27:30,228 - DEBUG - New IBST added: <IBST (transient 2409339377360)>
+2024-09-09 14:27:48,430 - DEBUG - New IBST added: <IBST (transient 2409339372080)>
+2024-09-09 14:28:19,746 - DEBUG - New IBST added: <IBST (transient 2409339373232)>
+2024-09-09 14:28:34,251 - DEBUG - New IBST added: <IBST (transient 2409339372176)>
+2024-09-09 14:28:44,810 - DEBUG - New IBST added: <IBST (transient 2409339375968)>
+2024-09-09 14:28:55,131 - DEBUG - New IBST added: <IBST (transient 2409339379088)>
+2024-09-09 14:29:10,652 - DEBUG - New IBST added: <IBST (transient 2409339380000)>
+2024-09-09 14:29:29,648 - DEBUG - New IBST added: <IBST (transient 2409339380384)>
+2024-09-09 14:29:40,580 - DEBUG - New IBST added: <IBST (transient 2409339380432)>
+2024-09-09 14:29:50,986 - DEBUG - New IBST added: <IBST (transient 2409339380912)>
+2024-09-10 06:49:48,047 - DEBUG - New IBST added: <IBST (transient 2409339381392)>
+2024-09-10 06:59:49,189 - DEBUG - New IBST added: <IBST (transient 2409339372224)>
+2024-09-10 07:06:34,908 - DEBUG - New IBST added: <IBST (transient 2409339386816)>
+2024-09-10 07:06:58,909 - DEBUG - New IBST added: <IBST (transient 2409339385664)>
+2024-09-10 07:07:26,112 - DEBUG - New IBST added: <IBST (transient 2409339759856)>
+2024-09-10 07:08:02,849 - DEBUG - New IBST added: <IBST (transient 2409339760288)>
+2024-09-10 07:09:55,201 - DEBUG - New IBST added: <IBST (transient 2409339763648)>
+2024-09-10 07:10:23,508 - DEBUG - New IBST added: <IBST (transient 2409339753232)>
+2024-09-10 07:10:52,077 - DEBUG - New IBST added: <IBST (transient 2409339757840)>
+2024-09-10 07:11:41,427 - DEBUG - New IBST added: <IBST (transient 2409339763408)>
+2024-09-10 07:12:07,785 - DEBUG - New IBST added: <IBST (transient 2409339376208)>
+2024-09-10 07:13:09,767 - DEBUG - New IBST added: <IBST (transient 2409339749344)>
+2024-09-10 07:13:39,320 - DEBUG - New IBST added: <IBST (transient 2409339386864)>
+2024-09-10 07:14:11,273 - DEBUG - New IBST added: <IBST (transient 2409339761920)>
+2024-09-10 07:14:37,187 - DEBUG - New IBST added: <IBST (transient 2409339759136)>
+2024-09-10 07:15:13,914 - DEBUG - New IBST added: <IBST (transient 2409339750688)>
+2024-09-10 10:42:39,846 - DEBUG - New Note added: <Notes (transient 1551002197920)>
+2024-09-10 10:43:21,969 - DEBUG - New Note added: <Notes (transient 1551002002320)>
+2024-09-10 12:53:27,815 - DEBUG - New Note added: <Notes (transient 1551002665280)>
+2024-09-10 12:56:09,148 - DEBUG - New Note added: <Notes (transient 1551002203296)>
+2024-09-10 12:56:37,342 - DEBUG - New Note added: <Notes (transient 1551002678000)>
+2024-09-10 12:57:58,074 - DEBUG - New Note added: <Notes (transient 2067615479280)>
+2024-09-10 13:58:43,530 - ERROR - Exception on /Parts [POST]
 Traceback (most recent call last):
   File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 1473, in wsgi_app
     response = self.full_dispatch_request()
@@ -24,63 +47,7 @@ Traceback (most recent call last):
   File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 865, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\Desktop\MaintTracker\Backend\app.py", line 96, in add_specs
-    db.session.commit()
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\scoping.py", line 597, in commit
-    return self._proxied.commit()
-           ^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\session.py", line 1972, in commit
-    trans.commit(_to_root=True)
-  File "<string>", line 2, in commit
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 139, in _go
-    ret_value = fn(self, *arg, **kw)
-                ^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\session.py", line 1257, in commit
-    self._prepare_impl()
-  File "<string>", line 2, in _prepare_impl
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 139, in _go
-    ret_value = fn(self, *arg, **kw)
-                ^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\session.py", line 1232, in _prepare_impl
-    self.session.flush()
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\session.py", line 4296, in flush
-    self._flush(objects)
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\session.py", line 4431, in _flush
-    with util.safe_reraise():
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
-    raise exc_value.with_traceback(exc_tb)
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\session.py", line 4392, in _flush
-    flush_context.execute()
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
-    rec.execute(self)
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
-    util.preloaded.orm_persistence.save_obj(
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
-    _emit_insert_statements(
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1048, in _emit_insert_statements
-    result = connection.execute(
-             ^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\engine\base.py", line 1422, in execute
-    return meth(
-           ^^^^^
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\sql\elements.py", line 514, in _execute_on_connection
-    return connection._execute_clauseelement(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\engine\base.py", line 1644, in _execute_clauseelement
-    ret = self._execute_context(
-          ^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\engine\base.py", line 1850, in _execute_context
-    return self._exec_single_context(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\engine\base.py", line 1990, in _exec_single_context
-    self._handle_dbapi_exception(
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\engine\base.py", line 2357, in _handle_dbapi_exception
-    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\engine\base.py", line 1971, in _exec_single_context
-    self.dialect.do_execute(
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\engine\default.py", line 919, in do_execute
-    cursor.execute(statement, parameters)
-sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: specs.sn
-[SQL: INSERT INTO specs (id, qrcode, sn, name, designator, subdesignator, oil, coolant, department, motor, hours) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
-[parameters: ('9', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAAAXNSR0IArs4c6QAAEX1JREFUeF7tXWmsFEUQboISwQvBqBwqCHgkHsgZUORGAqKIF6AYQEXBBJQj/BB ... (5788 characters truncated) ... GYYtCECdLCH9Pnz5dckseT4gFkNQKDooEFnz3gQPSSgyRLF+sljE0Mwhh6mbNmklu6ZgVQLKIKkAkJVWAjCBEW4BEs9LgUQtQKcWQLUDyDtQCqAXw6hJzFuBfAOQstegBZWIAAAAASUVORK5CYII=', '51S366010-01', 'Converyor', 'Untha ZR2400', 'Vibratory Mover', 'None', 'None', 'ShredPlant', 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQ ... (30005 characters truncated) ... PAmdiGyFznj0ras5xHsG7BPI4PSiilYCp4j8ZRXGoWelJIycnLYPNdFLYWWqLDBOxeZVXexHb2oorWJLOD+JFtb6ZNDFAoCsM4A7V5zbtE2tRLdx7rYg8Ciiuynsc8jV+y6V/dP5UUUVpzMxP/9k=', '825')]
-(Background on this error at: https://sqlalche.me/e/20/gkpj)
+  File "C:\Users\Chris\Desktop\MaintTracker\Backend\app.py", line 621, in add_part
+    quantity = request.json['quantity']
+               ~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'quantity'
