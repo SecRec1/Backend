@@ -1,4 +1,36 @@
-2024-08-30 13:07:07,953 - ERROR - Exception on /Specs/M6274 -1 [PUT]
+2024-09-09 14:27:30,228 - DEBUG - New IBST added: <IBST (transient 2409339377360)>
+2024-09-09 14:27:48,430 - DEBUG - New IBST added: <IBST (transient 2409339372080)>
+2024-09-09 14:28:19,746 - DEBUG - New IBST added: <IBST (transient 2409339373232)>
+2024-09-09 14:28:34,251 - DEBUG - New IBST added: <IBST (transient 2409339372176)>
+2024-09-09 14:28:44,810 - DEBUG - New IBST added: <IBST (transient 2409339375968)>
+2024-09-09 14:28:55,131 - DEBUG - New IBST added: <IBST (transient 2409339379088)>
+2024-09-09 14:29:10,652 - DEBUG - New IBST added: <IBST (transient 2409339380000)>
+2024-09-09 14:29:29,648 - DEBUG - New IBST added: <IBST (transient 2409339380384)>
+2024-09-09 14:29:40,580 - DEBUG - New IBST added: <IBST (transient 2409339380432)>
+2024-09-09 14:29:50,986 - DEBUG - New IBST added: <IBST (transient 2409339380912)>
+2024-09-10 06:49:48,047 - DEBUG - New IBST added: <IBST (transient 2409339381392)>
+2024-09-10 06:59:49,189 - DEBUG - New IBST added: <IBST (transient 2409339372224)>
+2024-09-10 07:06:34,908 - DEBUG - New IBST added: <IBST (transient 2409339386816)>
+2024-09-10 07:06:58,909 - DEBUG - New IBST added: <IBST (transient 2409339385664)>
+2024-09-10 07:07:26,112 - DEBUG - New IBST added: <IBST (transient 2409339759856)>
+2024-09-10 07:08:02,849 - DEBUG - New IBST added: <IBST (transient 2409339760288)>
+2024-09-10 07:09:55,201 - DEBUG - New IBST added: <IBST (transient 2409339763648)>
+2024-09-10 07:10:23,508 - DEBUG - New IBST added: <IBST (transient 2409339753232)>
+2024-09-10 07:10:52,077 - DEBUG - New IBST added: <IBST (transient 2409339757840)>
+2024-09-10 07:11:41,427 - DEBUG - New IBST added: <IBST (transient 2409339763408)>
+2024-09-10 07:12:07,785 - DEBUG - New IBST added: <IBST (transient 2409339376208)>
+2024-09-10 07:13:09,767 - DEBUG - New IBST added: <IBST (transient 2409339749344)>
+2024-09-10 07:13:39,320 - DEBUG - New IBST added: <IBST (transient 2409339386864)>
+2024-09-10 07:14:11,273 - DEBUG - New IBST added: <IBST (transient 2409339761920)>
+2024-09-10 07:14:37,187 - DEBUG - New IBST added: <IBST (transient 2409339759136)>
+2024-09-10 07:15:13,914 - DEBUG - New IBST added: <IBST (transient 2409339750688)>
+2024-09-10 10:42:39,846 - DEBUG - New Note added: <Notes (transient 1551002197920)>
+2024-09-10 10:43:21,969 - DEBUG - New Note added: <Notes (transient 1551002002320)>
+2024-09-10 12:53:27,815 - DEBUG - New Note added: <Notes (transient 1551002665280)>
+2024-09-10 12:56:09,148 - DEBUG - New Note added: <Notes (transient 1551002203296)>
+2024-09-10 12:56:37,342 - DEBUG - New Note added: <Notes (transient 1551002678000)>
+2024-09-10 12:57:58,074 - DEBUG - New Note added: <Notes (transient 2067615479280)>
+2024-09-10 13:58:43,530 - ERROR - Exception on /Parts [POST]
 Traceback (most recent call last):
   File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 1473, in wsgi_app
     response = self.full_dispatch_request()
@@ -15,11 +47,34 @@ Traceback (most recent call last):
   File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 865, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\Desktop\MaintTracker\Backend\app.py", line 108, in specs_update
-    specs.qrcode = data.get('qrcode', specs.qrcode)
-                                      ^^^^^^^^^^^^
-AttributeError: 'NoneType' object has no attribute 'qrcode'
-2024-08-30 13:08:24,632 - ERROR - Exception on /Specs [POST]
+  File "C:\Users\Chris\Desktop\MaintTracker\Backend\app.py", line 621, in add_part
+    quantity = request.json['quantity']
+               ~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'quantity'
+2024-09-10 14:04:08,298 - ERROR - Exception on /Parts [POST]
+Traceback (most recent call last):
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask_cors\extension.py", line 178, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\Desktop\MaintTracker\Backend\app.py", line 621, in add_part
+    quantity = request.json['quantity']
+               ~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'quantity'
+2024-09-11 14:09:31,425 - DEBUG - New Note added: <Notes (transient 2232436296304)>
+2024-09-16 08:29:45,486 - DEBUG - New IBST added: <IBST (transient 2232436296976)>
+2024-09-16 08:53:12,411 - ERROR - Exception on /Specs [POST]
 Traceback (most recent call last):
   File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 1473, in wsgi_app
     response = self.full_dispatch_request()
@@ -40,7 +95,15 @@ Traceback (most recent call last):
     motor = request.json['motor']
             ~~~~~~~~~~~~^^^^^^^^^
 KeyError: 'motor'
-2024-08-30 13:10:09,413 - ERROR - Exception on /Specs/M6274 -1 [PUT]
+2024-09-16 13:00:03,447 - ERROR - Exception on /IBST/5 [DELETE]
+Traceback (most recent call last):
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\session.py", line 3478, in delete
+    state = attributes.instance_state(instance)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute '_sa_instance_state'
+
+The above exception was the direct cause of the following exception:
+
 Traceback (most recent call last):
   File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 1473, in wsgi_app
     response = self.full_dispatch_request()
@@ -57,80 +120,11 @@ Traceback (most recent call last):
   File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 865, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\Desktop\MaintTracker\Backend\app.py", line 108, in specs_update
-    specs.qrcode = data.get('qrcode', specs.qrcode)
-                                      ^^^^^^^^^^^^
-AttributeError: 'NoneType' object has no attribute 'qrcode'
-2024-09-05 09:18:33,075 - DEBUG - New IBST added: <IBST (transient 2042809028144)>
-2024-09-05 09:19:50,662 - DEBUG - New IBST added: <IBST (transient 2042809108672)>
-2024-09-05 09:20:36,174 - DEBUG - New IBST added: <IBST (transient 2042809028144)>
-2024-09-05 09:20:52,404 - DEBUG - New IBST added: <IBST (transient 2042809118560)>
-2024-09-05 09:21:21,904 - DEBUG - New IBST added: <IBST (transient 2042808784736)>
-2024-09-05 09:22:07,892 - DEBUG - New IBST added: <IBST (transient 2042809109872)>
-2024-09-05 09:22:34,318 - DEBUG - New IBST added: <IBST (transient 2042808780320)>
-2024-09-05 09:23:02,293 - DEBUG - New IBST added: <IBST (transient 2042809121248)>
-2024-09-05 09:23:35,465 - DEBUG - New IBST added: <IBST (transient 2042809033616)>
-2024-09-05 09:24:06,121 - DEBUG - New IBST added: <IBST (transient 2042808783440)>
-2024-09-05 09:25:23,170 - DEBUG - New IBST added: <IBST (transient 2042809107280)>
-2024-09-05 09:26:15,791 - DEBUG - New IBST added: <IBST (transient 2042809119568)>
-2024-09-06 11:04:54,172 - DEBUG - New IBST added: <IBST (transient 2042809425920)>
-2024-09-06 11:05:51,608 - DEBUG - New IBST added: <IBST (transient 2042808780992)>
-2024-09-06 11:08:20,775 - DEBUG - New IBST added: <IBST (transient 2042809110880)>
-2024-09-06 11:08:53,341 - DEBUG - New IBST added: <IBST (transient 2042809433888)>
-2024-09-06 11:09:24,422 - DEBUG - New IBST added: <IBST (transient 2042809420160)>
-2024-09-06 11:10:12,236 - DEBUG - New IBST added: <IBST (transient 2042809400592)>
-2024-09-06 11:10:48,357 - DEBUG - New IBST added: <IBST (transient 2042809428272)>
-2024-09-09 13:53:47,895 - ERROR - Exception on /Admin [POST]
-Traceback (most recent call last):
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 1473, in wsgi_app
-    response = self.full_dispatch_request()
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 882, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask_cors\extension.py", line 178, in wrapped_function
-    return cors_after_request(app.make_response(f(*args, **kwargs)))
-                                                ^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 880, in full_dispatch_request
-    rv = self.dispatch_request()
-         ^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 865, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\Desktop\MaintTracker\Backend\app.py", line 365, in add_admin
-    id = request.json['id']
-         ~~~~~~~~~~~~^^^^^^
-TypeError: list indices must be integers or slices, not str
-2024-09-09 14:18:17,320 - ERROR - Exception on /Admin [POST]
-Traceback (most recent call last):
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 1473, in wsgi_app
-    response = self.full_dispatch_request()
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 882, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask_cors\extension.py", line 178, in wrapped_function
-    return cors_after_request(app.make_response(f(*args, **kwargs)))
-                                                ^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 880, in full_dispatch_request
-    rv = self.dispatch_request()
-         ^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\flask\app.py", line 865, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Chris\Desktop\MaintTracker\Backend\app.py", line 366, in add_admin
-    username = request.json['username']
-               ~~~~~~~~~~~~^^^^^^^^^^^^
-KeyError: 'username'
-2024-09-09 14:19:52,884 - DEBUG - New IBST added: <IBST (transient 2409339253584)>
-2024-09-09 14:20:01,552 - DEBUG - New IBST added: <IBST (transient 2409339247008)>
-2024-09-09 14:20:10,888 - DEBUG - New IBST added: <IBST (transient 2409339256512)>
-2024-09-09 14:20:18,078 - DEBUG - New IBST added: <IBST (transient 2409339247344)>
-2024-09-09 14:21:14,233 - DEBUG - New IBST added: <IBST (transient 2409339054288)>
-2024-09-09 14:21:23,854 - DEBUG - New IBST added: <IBST (transient 2409339055968)>
-2024-09-09 14:21:32,066 - DEBUG - New IBST added: <IBST (transient 2409339055104)>
-2024-09-09 14:21:40,362 - DEBUG - New IBST added: <IBST (transient 2409339049632)>
-2024-09-09 14:21:55,053 - DEBUG - New IBST added: <IBST (transient 2409339373232)>
-2024-09-09 14:22:09,726 - DEBUG - New IBST added: <IBST (transient 2409339374816)>
-2024-09-09 14:22:22,693 - DEBUG - New IBST added: <IBST (transient 2409339376496)>
-2024-09-09 14:23:47,325 - DEBUG - New IBST added: <IBST (transient 2409339056448)>
+  File "C:\Users\Chris\Desktop\MaintTracker\Backend\app.py", line 320, in ibst_delete
+    db.session.delete(ibst)
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\scoping.py", line 672, in delete
+    return self._proxied.delete(instance)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Chris\.virtualenvs\Backend-NKSSbLU1\Lib\site-packages\sqlalchemy\orm\session.py", line 3480, in delete
+    raise exc.UnmappedInstanceError(instance) from err
+sqlalchemy.orm.exc.UnmappedInstanceError: Class 'builtins.NoneType' is not mapped
