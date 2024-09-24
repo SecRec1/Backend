@@ -21,8 +21,10 @@ MarkupSafe==2.1.5
 marshmallow==3.21.1
 marshmallow-sqlalchemy==1.0.0
 packaging==24.0
+portalocker==2.10.1
 pycparser==2.22
 PySocks==1.7.1
+pywin32==306
 requests==2.31.0
 requests-file==2.0.0
 setuptools==69.5.1
