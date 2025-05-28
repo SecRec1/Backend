@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, httpx, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_cors import CORS
@@ -77,18 +77,18 @@ def get_specs(sn):
 
 @app.route("/Specs", methods=["POST"])
 def add_specs():
-    id = request.json['id']
-    sn = request.json['sn']
-    qrcode = request.json['qrcode']
-    name = request.json['name']
-    designator = request.json['designator']
-    subdesignator = request.json['subdesignator']
-    hours = request.json['hours']
-    oil = request.json['oil']
-    coolant = request.json['coolant']
-    department = request.json['department']
-    motor = request.json['motor']
-    hours = request.json['hours']
+    id = httpx.json['id']
+    sn = httpx.json['sn']
+    qrcode = httpx.json['qrcode']
+    name = httpx.json['name']
+    designator = httpx.json['designator']
+    subdesignator = httpx.json['subdesignator']
+    hours = httpx.json['hours']
+    oil = httpx.json['oil']
+    coolant = httpx.json['coolant']
+    department = httpx.json['department']
+    motor = httpx.json['motor']
+    hours = httpx.json['hours']
 
     new_specs = Specs(id,qrcode,sn, name, designator, subdesignator,oil,coolant,department,motor,hours)
 
@@ -102,7 +102,7 @@ def add_specs():
 @app.route("/Specs/<sn>", methods=["PUT"])
 def specs_update(sn):
     specs = Specs.query.get(sn)
-    data = request.get_json()
+    data = httpx.get_json()
     print(f"Received PUT request for SN: {sn} with data: {data}")
 
     specs.qrcode = data.get('qrcode', specs.qrcode)
@@ -178,9 +178,9 @@ def get_task(id):
 
 @app.route("/Task", methods=["POST"])
 def add_task():
-    id = request.json['id']
-    job = request.json['job']
-    instructions = request.json['instructions']
+    id = httpx.json['id']
+    job = httpx.json['job']
+    instructions = httpx.json['instructions']
     
     new_task = Task(id, job, instructions)
 
@@ -195,7 +195,7 @@ def add_task():
 @app.route("/Task/<id>", methods=["PUT"])
 def task_update(id):
     task = Task.query.get(id)
-    data = request.get_json()
+    data = httpx.get_json()
 
     task.job = data.get('job', task.job)
     task.instructions = data.get('instructions', task.instructions)
@@ -254,15 +254,15 @@ def add_ibst():
     
     try:
         
-        specs_sn = request.json['specs_sn']
-        task_id = request.json['task_id']
-        lastcompleted = request.json['lastcompleted']
-        nextdue = request.json['nextdue']
-        notes = request.json['notes']
-        duration = request.json['duration']
-        hdselector = request.json['hdselector']
+        specs_sn = httpx.json['specs_sn']
+        task_id = httpx.json['task_id']
+        lastcompleted = httpx.json['lastcompleted']
+        nextdue = httpx.json['nextdue']
+        notes = httpx.json['notes']
+        duration = httpx.json['duration']
+        hdselector = httpx.json['hdselector']
 
-        logging.debug(f"Received data: {request.json}")
+        logging.debug(f"Received data: {httpx.json}")
 
         new_ibst = IBST(specs_sn=specs_sn, task_id=task_id, lastcompleted=lastcompleted, nextdue=nextdue, notes=notes, duration=duration, hdselector=hdselector)
 
@@ -275,8 +275,8 @@ def add_ibst():
 
         return ibst_schema.jsonify(ibst)
     except KeyError as e:
-        logging.error(f"Missing key in request: {e.args[0]}")
-        return jsonify({"error": f"Missing key in request: {e.args[0]}"}), 400
+        logging.error(f"Missing key in httpx: {e.args[0]}")
+        return jsonify({"error": f"Missing key in httpx: {e.args[0]}"}), 400
     except Exception as e:
         logging.error(f"Error: {str(e)}")
         return jsonify({"error": str(e)}), 500
@@ -290,7 +290,7 @@ def ibst_update(id):
         if ibst is None:
             return jsonify({"message": "IBST not found"}), 404  # 404 Not Found
         
-        data = request.json
+        data = httpx.json
         if 'id' in data:
             ibst.id = data['id']
         if 'specs_sn' in data:
@@ -362,10 +362,10 @@ def get_admin(id):
 
 @app.route('/Admin', methods=["POST"])
 def add_admin():
-    id = request.json['id']
-    username = request.json['username']
-    password = request.json['password']
-    loggedin = request.json['loggedin']
+    id = httpx.json['id']
+    username = httpx.json['username']
+    password = httpx.json['password']
+    loggedin = httpx.json['loggedin']
    
     new_admin = Admin(id, username, password, loggedin)
 
@@ -379,7 +379,7 @@ def add_admin():
 @app.route("/Admin/<id>", methods=["PUT"])
 def admin_update(id):
     admin = Admin.query.get(id)
-    data = request.get_json()
+    data = httpx.get_json()
 
     admin.id = data.get('id', admin.id)
     admin.username = data.get('username', admin.username)
@@ -395,7 +395,7 @@ def update_admin_status(id):
     if not admin:
         return jsonify({"error": "Admin not found"}), 404
 
-    data = request.get_json()
+    data = httpx.get_json()
     admin.loggedin = data.get('loggedin', admin.loggedin)
 
     db.session.commit()
@@ -453,11 +453,11 @@ def get_note(id):
 def add_note():
 
     try:
-        note = request.json['note']
-        date = request.json['date']
-        retired = request.json['retired']
+        note = httpx.json['note']
+        date = httpx.json['date']
+        retired = httpx.json['retired']
         
-        logging.debug(f"Received data: {request.json}")
+        logging.debug(f"Received data: {httpx.json}")
 
         new_note = Notes(note=note, date=date, retired=retired)
 
@@ -469,8 +469,8 @@ def add_note():
         note = Notes.query.get(new_note.id)
         return note_schema.jsonify(note)
     except KeyError as e:
-        logging.error(f"Missing key in request: {e.args[0]}")
-        return jsonify({"error": f"Missing key in request: {e.args[0]}"}), 400
+        logging.error(f"Missing key in httpx: {e.args[0]}")
+        return jsonify({"error": f"Missing key in httpx: {e.args[0]}"}), 400
     except Exception as e:
         logging.error(f"Error: {str(e)}")
         return jsonify({"error": str(e)}), 500
@@ -483,7 +483,7 @@ def note_update(id):
         if note is None:
             return jsonify({"message": "Note not found"}), 404  # 404 Not Found
         
-        data = request.json
+        data = httpx.json
         if 'id' in data:
             note.id = data['id']
         if 'note' in data:
@@ -542,9 +542,9 @@ def get_toolneed(id):
 
 @app.route("/ToolNeeds", methods=["POST"])
 def add_toolneed():
-    tool = request.json['tool']
-    size = request.json['size']
-    count = request.json['count']
+    tool = httpx.json['tool']
+    size = httpx.json['size']
+    count = httpx.json['count']
     
     new_toolneed = Toolneeds(tool=tool, size=size, count=count)
     
@@ -560,7 +560,7 @@ def toolneed_update(id):
     if toolneed is None:
         return jsonify({"message": "ToolNeed not found"}), 404  # 404 Not Found
     
-    data = request.json
+    data = httpx.json
     if 'id' in data:
         toolneed.id = data['id']
     if 'tool' in data:
@@ -617,10 +617,10 @@ def get_part(id):
 
 @app.route("/Parts", methods=["POST"])
 def add_part():
-    part = request.json['part']
-    quantity = request.json['quantity']
-    ordered = request.json['ordered']
-    eta = request.json['eta']
+    part = httpx.json['part']
+    quantity = httpx.json['quantity']
+    ordered = httpx.json['ordered']
+    eta = httpx.json['eta']
     
     new_part = Parts(part=part, quantity=quantity, ordered=ordered, eta=eta)
     
@@ -636,7 +636,7 @@ def part_update(id):
     if part is None:
         return jsonify({"message": "Part not found"}), 404  # 404 Not Found
     
-    data = request.json
+    data = httpx.json
     if 'id' in data:
         part.id = data['id']
     if 'part' in data:
@@ -695,10 +695,10 @@ def get_contractor(id):
 
 @app.route("/Contractors", methods=["POST"])
 def add_contractor():
-    company = request.json['company']
-    onsitestart = request.json['onsitestart']
-    onsiteend = request.json['onsiteend']
-    indoor = request.json['indoor']
+    company = httpx.json['company']
+    onsitestart = httpx.json['onsitestart']
+    onsiteend = httpx.json['onsiteend']
+    indoor = httpx.json['indoor']
     
     new_contractor = Contractors(company=company, onsitestart=onsitestart, onsiteend=onsiteend, indoor=indoor)
     
@@ -714,7 +714,7 @@ def contractor_update(id):
     if contractor is None:
         return jsonify({"message": "Contractor not found"}), 404  # 404 Not Found
     
-    data = request.json
+    data = httpx.json
     if 'id' in data:
         contractor.id = data['id']
     if 'company' in data:
@@ -770,8 +770,8 @@ def get_job(id):
 
 @app.route("/Jobs", methods=["POST"])
 def add_job():
-    job = request.json['job']
-    reasons = request.json['reasons']
+    job = httpx.json['job']
+    reasons = httpx.json['reasons']
     
     new_job = Jobs(job=job, reasons=reasons)
     
@@ -787,7 +787,7 @@ def job_update(id):
     if job is None:
         return jsonify({"message": "Job not found"}), 404  # 404 Not Found
     
-    data = request.json
+    data = httpx.json
     if 'id' in data:
         job.id = data['id']
     if 'job' in data:
