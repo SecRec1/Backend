@@ -55,7 +55,7 @@
                 "sha256:b9e307d082a9261c100d8fb0ba909eec6a228ed1b60a8315fd85f783d61910bc"
             ],
             "index": "pypi",
-            "version": "==5.0.0"
+            "version": ">=6.0.0"
         },
         "flask-marshmallow": {
             "hashes": [
