@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "cors": "^2.8.5",
-    "cross-env": "^7.0.3",
+    "cross-env": "^10.0.0",
     "flask": "^0.2.10",
     "httpx": "^3.0.1",
     "mysql": "^2.18.1",
